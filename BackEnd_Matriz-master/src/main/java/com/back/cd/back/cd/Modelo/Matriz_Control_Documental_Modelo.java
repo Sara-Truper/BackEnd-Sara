@@ -1,8 +1,10 @@
 package com.back.cd.back.cd.Modelo;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -74,8 +76,9 @@ public class Matriz_Control_Documental_Modelo {
      @javax.persistence.Column(name = "etd")
      private String etd;
 
+     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
      @javax.persistence.Column(name = "etd_po")
-     private LocalDateTime etd_po;
+     private LocalDate etd_po;
 
      @javax.persistence.Column(name = "etd_pi")
      private LocalDateTime etd_pi;
@@ -343,11 +346,11 @@ public class Matriz_Control_Documental_Modelo {
 		this.etd = etd;
 	}
 
-	public LocalDateTime getEtd_po() {
+	public LocalDate getEtd_po() {
 		return etd_po;
 	}
 
-	public void setEtd_po(LocalDateTime etd_po) {
+	public void setEtd_po(LocalDate etd_po) {
 		this.etd_po = etd_po;
 	}
 
