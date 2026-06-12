@@ -49,7 +49,7 @@ public class Actualizar_Bases_Controller {
 	}
 	
 	@PostMapping("/actualizar2")
-	public ResponseEntity<Map<String, Object>> contactos(){
+	public ResponseEntity<Map<String, Object>> contactos(){ 
 		Map<String, Object> respuesta = new HashMap<>();
         try {
             mService.actualizarContactos();

@@ -107,6 +107,7 @@ public class Soc_Controller {
 	 soc_modelo.setStatus_problema(soc_modeloReg.getStatus_problema());
 	 soc_modelo.setUbicacion_en_archivo(soc_modeloReg.getUbicacion_en_archivo());
 	 soc_modelo.setUnidad_de_negocio(soc_modeloReg.getUnidad_de_negocio());
+	 soc_modelo.setReimp(soc_modeloReg.getReimp());
      return ResponseEntity.ok(soc_Repositorio.save(soc_modelo));
 
 	}
