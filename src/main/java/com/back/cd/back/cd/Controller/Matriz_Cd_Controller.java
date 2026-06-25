@@ -126,7 +126,6 @@ public class Matriz_Cd_Controller {
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("delete", Boolean.TRUE);
 		return ResponseEntity.ok(response);
-		
 	}
 	
 	@GetMapping("/matrizcd/nuevapo/{folio_tt}")

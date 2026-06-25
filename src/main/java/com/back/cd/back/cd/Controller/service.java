@@ -19,6 +19,8 @@ import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.back.cd.back.cd.Modelo.Arancel_Modelo;
+import com.back.cd.back.cd.Modelo.Fabricas_Modelo;
 import com.back.cd.back.cd.Modelo.codigos;
 import com.back.cd.back.cd.Modelo.contactos;
 import com.back.cd.back.cd.Modelo.directos;
@@ -26,6 +28,8 @@ import com.back.cd.back.cd.Modelo.listaProveedores;
 import com.back.cd.back.cd.Modelo.pool;
 import com.back.cd.back.cd.Modelo.precios;
 import com.back.cd.back.cd.Modelo.wksh;
+import com.back.cd.back.cd.Modelo.Repositorio.Arancel_Repositorio;
+import com.back.cd.back.cd.Modelo.Repositorio.Fabricas_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.preciosRepository;
 
 
@@ -33,7 +37,7 @@ import com.back.cd.back.cd.Modelo.Repositorio.preciosRepository;
 public class service {
 	@Autowired
 	private com.back.cd.back.cd.Modelo.Repositorio.listaProveedoresRepository proveedoresRepository;
-	@Autowired 
+	@Autowired
 	private com.back.cd.back.cd.Modelo.Repositorio.directosRepository directosRepository;
 	@Autowired
 	private com.back.cd.back.cd.Modelo.Repositorio.poolRepository poolRepository;
@@ -45,6 +49,87 @@ public class service {
 	private com.back.cd.back.cd.Modelo.Repositorio.codigosRepository codigosRepository;
 	@Autowired
 	private preciosRepository preciosRepository;
+	@Autowired
+	private Fabricas_Repositorio fabricas_Repositorio;
+	@Autowired
+	private Arancel_Repositorio arancel_Repositorio;
+	
+	@Transactional
+	public void actualizarArancel() throws Exception{
+		IOUtils.setByteArrayMaxOverride(200_000_000);
+		String ruta="\\\\cernotes\\Formatos Vigentes-PARCELMOBI\\% arancel PM.xlsx";
+		Workbook wb= WorkbookFactory.create(new FileInputStream(ruta));
+		Sheet sheet= wb.getSheetAt(0);
+		arancel_Repositorio.Truncararancel();
+		List<Arancel_Modelo> arancel= new ArrayList<>();
+		for (int i=1; i<=sheet.getLastRowNum(); i++) {
+			try {
+	            Row fila = sheet.getRow(i);
+	            if (fila == null || getCellValue(fila.getCell(0)).isEmpty()) {
+	                continue; 
+	            }
+	            Arancel_Modelo a = new Arancel_Modelo();
+	            a.setProveedor(getCellValue(fila.getCell(0)));
+	            a.setNombre_proveedor(getCellValue(fila.getCell(1)));
+	            a.setMaterial(getCellValue(fila.getCell(2)));
+	            a.setCentro(getCellValue(fila.getCell(3)));
+	            a.setPorcentaje(getCellValue(fila.getCell(4)));
+
+	            arancel.add(a);
+	        	}catch (Exception e) {
+	                System.err.println("Error procesando la fila " + (i + 1) + ": " + e.getMessage());
+	            }
+	            if (arancel.size() >= 500) {
+	                arancel_Repositorio.saveAll(arancel);
+	                arancel.clear();
+	            }
+	        }
+	        if (!arancel.isEmpty()) {
+	        	arancel_Repositorio.saveAll(arancel);
+	        }
+
+	        arancel_Repositorio.saveAll(arancel);
+	        wb.close();
+	}
+	
+	@Transactional
+	public void actualizarFabricas() throws Exception{
+		IOUtils.setByteArrayMaxOverride(200_000_000);
+		String ruta="\\\\cernotes\\A_Apoyo Sistema\\Fabricas Importaciones.xlsx";
+		Workbook wb= WorkbookFactory.create(new FileInputStream(ruta));
+		Sheet sheet= wb.getSheetAt(0);
+		fabricas_Repositorio.Truncarfabricas();
+		List<Fabricas_Modelo> fabricas= new ArrayList<>();
+		for (int i=1; i<=sheet.getLastRowNum(); i++) {
+			try {
+	            Row fila = sheet.getRow(i);
+	            if (fila == null || getCellValue(fila.getCell(0)).isEmpty()) {
+	                continue; 
+	            }
+	            Fabricas_Modelo f = new Fabricas_Modelo();
+	            f.setCodigo(getCellValue(fila.getCell(0)));
+	            f.setClave(getCellValue(fila.getCell(1)));
+	            f.setSap_prov_real(getCellValue(fila.getCell(2)));
+	            f.setNombre_prov_real(getCellValue(fila.getCell(3)));
+	            f.setSap_fabrica(getCellValue(fila.getCell(4)));
+	            f.setNombre_fabrica(getCellValue(fila.getCell(5)));
+
+	            fabricas.add(f);
+	        	}catch (Exception e) {
+	                System.err.println("Error procesando la fila " + (i + 1) + ": " + e.getMessage());
+	            }
+	            if (fabricas.size() >= 500) {
+	                fabricas_Repositorio.saveAll(fabricas);
+	                fabricas.clear();
+	            }
+	        }
+	        if (!fabricas.isEmpty()) {
+	        	fabricas_Repositorio.saveAll(fabricas);
+	        }
+
+	        fabricas_Repositorio.saveAll(fabricas);
+	        wb.close();
+	}
 	
 	@Transactional
 	public void actualizarProveedores() throws Exception{
@@ -53,7 +138,7 @@ public class service {
 		String ruta="\\\\cernotes\\A_Apoyo Sistema\\Lista Proveedores Dirección Importaciones.xlsx";
 		Workbook wb = WorkbookFactory.create(new FileInputStream(ruta));
         Sheet sheet = wb.getSheetAt(0);
-        proveedoresRepository.deleteAllInBatch();
+        proveedoresRepository.Truncarlistaproveedores();
         List<listaProveedores> listaProv = new ArrayList<>();
 
         //for (int i=ultimaFila; i>=0; i--) {
@@ -113,9 +198,9 @@ public class service {
 	    String ruta = "\\\\Cernotes\\SEGUIMIENTO ORDENES DE COMPRA IMPORTS\\PO directos.xlsx";
 	    Workbook wb = WorkbookFactory.create(new FileInputStream(ruta));
 	    Sheet sheet = wb.getSheetAt(0);
-	    directosRepository.deleteAllInBatch();
+	    
 	    List<directos> listaDirectos = new ArrayList<>();
-
+	    directosRepository.Truncardirectos();
 	    /*Row filaTitulos = sheet.getRow(1); 
 	    for (int c = 0; c < filaTitulos.getLastCellNum(); c++) {
 	        System.out.println("indice [" + c + "]: " + getCellValue(filaTitulos.getCell(c)));
@@ -172,8 +257,8 @@ public class service {
 		IOUtils.setByteArrayMaxOverride(200_000_000);
 		String ruta = "\\\\Cernotes\\Matrices de Precio\\6_Reportes de PIs\\Reporte de PI's pool de Matrices.xlsx";
 	    Workbook wb = WorkbookFactory.create(new FileInputStream(ruta));
-	    Sheet sheet = wb.getSheetAt(0);	    
-	    poolRepository.deleteAllInBatch();
+	    Sheet sheet = wb.getSheetAt(0);
+	    poolRepository.Truncarpool();
 	    List<pool> listaPool = new ArrayList<>();
 	    
 	    for (int i = 3; i <= sheet.getLastRowNum(); i++) {
@@ -218,32 +303,27 @@ public class service {
 	            listaPool.clear();
 	        }
 	    }
-	    for (int j = 0; j < 6; j++) {
+	    String rutaExtra="\\\\cernotes\\SEGUIMIENTO ORDENES DE COMPRA IMPORTS\\Matr\\pool Extra data.xlsx";
+	    Workbook wbExtra = WorkbookFactory.create(new FileInputStream(rutaExtra));
+	    Sheet sheetExtra = wbExtra.getSheetAt(0);
+	    
+	    //fila2
+	    for (int j = 1; j <= sheetExtra.getLastRowNum(); j++) {
+	    	Row filaExtra = sheetExtra.getRow(j);
+            if (filaExtra == null) continue;
+	        int piDelExcel = getInt(filaExtra.getCell(0)); //col A
 	        pool extra = new pool();
 	        
 	        extra.setRecibidas_en_el_dia("manual");
 	        
-	        extra.setPi(0);
+	        extra.setPi(piDelExcel);
 	        extra.setBu("BU");
-	        if (j == 0) {
-	        	extra.setPi(8243939);
-	        }else if (j == 1) {
-	        	extra.setPi(8244637);
-			}else if (j == 2) {
-	        	extra.setPi(8245108);
-			}else if (j == 3) {
-	        	extra.setPi(8245140);				
-			}else if (j == 4) {
-	        	extra.setPi(8245479);								
-			}else if (j == 5) {
-				extra.setPi(8245222);
-			}
         	extra.setNo_de_proveedor("727844");				
 	        extra.setProveedor("Prov Gen");
 	        extra.setOpen_purchase_orders_etd("2026-01-01");
 	        extra.setUrgente("NO");
 	        extra.setIda("1");
-	        extra.setStatus_de_liberacion("OK");
+	        extra.setStatus_de_liberacion("N/A");
 	        extra.setComentarios("Registro agregado manual");
 	        extra.setFecha_de_liberacion_rechazo("2026-01-01");
 	        extra.setSeg_ctrl_doc("DOC");
@@ -252,8 +332,8 @@ public class service {
 	        extra.setStatus_matriz_dias_transcurridos("0");
 
 	        listaPool.add(extra);
+	        
 	    }
-	    
 	    
 	    if (!listaPool.isEmpty()) {
 	        poolRepository.saveAll(listaPool);
@@ -267,7 +347,7 @@ public class service {
 		Workbook wb = WorkbookFactory.create(new FileInputStream(ruta));
         Sheet sheetCompradores = wb.getSheet("Compradores");
         Sheet sheetPlaneadores= wb.getSheet("Planeadores");
-        contactosRepository.deleteAllInBatch();
+        contactosRepository.Truncarcontactos();
         List<contactos> listaContactos = new ArrayList<>();
         // BUSCARV: Grupo de planeadores (Columna B)  Gerente C, Planeador F
         for (int i=1; i <= sheetCompradores.getLastRowNum(); i++) {
@@ -317,7 +397,7 @@ public class service {
 	    
 		Workbook wb = WorkbookFactory.create(new FileInputStream(archivoE));
         Sheet sheet = wb.getSheetAt(0);
-        wkshRepository.deleteAllInBatch();
+        wkshRepository.Truncarwksh();
         
         List<wksh> listaWksh = new ArrayList<>();
         for(int i = 1; i <= sheet.getLastRowNum(); i++) {
@@ -350,8 +430,7 @@ public class service {
 	
 	@Transactional
 	public void actualizarCodigos() throws Exception{
-		codigosRepository.deleteAllInBatch();
-		
+		codigosRepository.Truncarcodigos();
 		String rutas[]={"\\\\cernotes\\A_Apoyo Sistema\\Lista Codigos Direccion Importaciones.xls",
 				"\\\\cernotes\\A_Apoyo Sistema\\Listado Codigos Refacciones.xlsm"};
 		for(int i=0; i<rutas.length; i++) {
@@ -407,7 +486,7 @@ public class service {
 	@Transactional
 	public void actualizarPrecios() throws Exception {
 	    IOUtils.setByteArrayMaxOverride(200_000_000);
-	    preciosRepository.deleteAllInBatch();
+	    preciosRepository.Truncarprecios();
 	    String[] nombresBase = {"Lista de precios ", "Lista de precios Refacciones "};
 	    for (int listado = 0; listado < nombresBase.length; listado++) {
 	        String nom = nombresBase[listado];

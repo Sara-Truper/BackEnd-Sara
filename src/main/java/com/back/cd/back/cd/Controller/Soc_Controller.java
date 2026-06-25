@@ -15,30 +15,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.back.cd.back.cd.Exception.ResourceNotFoundException;
-import com.back.cd.back.cd.Modelo.Matriz_Control_Documental_Modelo;
-import com.back.cd.back.cd.Modelo.SocDTO;
+import com.back.cd.back.cd.Modelo.AsignacionDTO;
 import com.back.cd.back.cd.Modelo.Soc_Modelo;
+import com.back.cd.back.cd.Modelo.socs_log_modelo;
 import com.back.cd.back.cd.Modelo.Repositorio.ContactosSoc;
 import com.back.cd.back.cd.Modelo.Repositorio.SocProjection;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Familia_1Item;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Nuevos;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Proveedor;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Repositorio;
+import com.back.cd.back.cd.Modelo.Repositorio.socs_log_repositorio;
 
 @RestController
 @RequestMapping("/importaciones/controldocumental")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class Soc_Controller {
 	@Autowired
 	private Soc_Repositorio soc_Repositorio;
+	@Autowired
+	private	socs_log_repositorio socs_log_repositorio;
 	
 	@GetMapping("/soccompleto/") 
 	public List<Soc_Modelo> listarSocTodo(){
 		return soc_Repositorio.findAll();
 	}
+	
 	@GetMapping("/matrizcd/nuevapo/new/{folio_tt}")
 	public List<SocProjection> crearMzRegistro(@PathVariable("folio_tt") Long folio_tt) {
 	    return soc_Repositorio.crearMzporfolio(folio_tt);
@@ -75,6 +80,24 @@ public class Soc_Controller {
 	    //respuesta.put("datosParaTabla", lista);
 	    return ResponseEntity.ok(respuesta);
 	}
+	
+	@PutMapping("/seguimientooc/asignacionuser")
+	public ResponseEntity<String> actualizarUser(@RequestBody AsignacionDTO dto) {
+
+	    List<Soc_Modelo> registros = soc_Repositorio.findAllById(dto.getIds());
+	    registros.forEach(r ->
+	        r.setAsistentepos(dto.getAsistentepos())
+	    );
+	    soc_Repositorio.saveAll(registros);	    
+	    List<socs_log_modelo> logs = socs_log_repositorio.findAllById(dto.getIdsplog());
+	    logs.forEach(l ->
+	        l.setAsistentepos(dto.getAsistentepos())
+	    );
+	    socs_log_repositorio.saveAll(logs);
+
+	    return ResponseEntity.ok("Actualizados");
+	}
+	
 	@PutMapping("/seguimientooc/modPO/{Id}")
 	public ResponseEntity<Soc_Modelo> actualizarRegSOc(@PathVariable("Id") Long Id, @RequestBody Soc_Modelo soc_modeloReg){
 		Soc_Modelo soc_modelo = soc_Repositorio.findById(Id)
@@ -121,6 +144,18 @@ public class Soc_Controller {
 	public List<Soc_Proveedor> getAllProvs(){
 		return soc_Repositorio.getAllProveedores();
 	}
+	
+	@GetMapping("/fabricas/{noSap}")
+    public ResponseEntity<List<String>> obtenerFabricasPorProveedor(@PathVariable("noSap") String noSap) {
+        List<String> fabricas = soc_Repositorio.findFabricasByProveedor(noSap);
+        return ResponseEntity.ok(fabricas);
+    }
+
+    @GetMapping("/fabricas/nombre")
+    public ResponseEntity<String> obtenerNombreFabrica(@RequestParam("noSap") String noSap, @RequestParam("sapFabrica") String sapFabrica) {
+        String nombre = soc_Repositorio.findNombreFabrica(noSap, sapFabrica);
+        return ResponseEntity.ok(nombre != null ? nombre : "");
+    }
 	
 	@GetMapping("/contactos/all")
 	public List<ContactosSoc> TraerContactos(){

@@ -4,13 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.back.cd.back.cd.Modelo.codigos;
-
+import com.back.cd.back.cd.Modelo.Arancel_Modelo;
 
 @Repository
-public interface codigosRepository extends JpaRepository<codigos, Long>{
+public interface Arancel_Repositorio extends JpaRepository<Arancel_Modelo, Long>{
 	@Query(value = ""
-			+ "truncate matriz_cd.codigos",
+			+ "truncate matriz_cd.arancel",
 			nativeQuery = true)
-		void Truncarcodigos() ;
+		void Truncararancel() ;
 }
