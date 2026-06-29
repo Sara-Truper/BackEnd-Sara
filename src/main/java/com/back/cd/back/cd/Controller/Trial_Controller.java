@@ -1,0 +1,47 @@
+package com.back.cd.back.cd.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.back.cd.back.cd.Modelo.Trial_Modelo;
+import com.back.cd.back.cd.Modelo.Repositorio.Trial_Repositorio;
+
+@RestController
+@RequestMapping("/importaciones/trialorder")
+@CrossOrigin
+public class Trial_Controller {
+	@Autowired
+	private Trial_Repositorio trial_Repositorio;
+	
+	@PostMapping("/guardar")
+    public ResponseEntity<?> guardar(@RequestBody Trial_Modelo trial) {
+        try {
+            Trial_Modelo guardado = trial_Repositorio.save(trial);
+            return ResponseEntity.ok(guardado); 
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al guardar: " + e.getMessage());
+        }
+    }
+	
+	@GetMapping("/buscar/{folio}")
+    public ResponseEntity<Trial_Modelo> buscarPorFolio(@PathVariable String folio) {
+        return trial_Repositorio.findByFolio(folio)
+        		.map(registro -> ResponseEntity.ok().body(registro))
+                .orElse(ResponseEntity.notFound().build());
+    }
+	
+	@GetMapping("/listar")
+    public ResponseEntity<List<Trial_Modelo>> listarTodos() {
+        List<Trial_Modelo> lista = trial_Repositorio.findAll();
+        return ResponseEntity.ok(lista);
+    }
+}

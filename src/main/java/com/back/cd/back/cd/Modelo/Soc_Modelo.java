@@ -3,13 +3,16 @@ package com.back.cd.back.cd.Modelo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@javax.persistence.Entity
-@javax.persistence.Table(name = "socs")
+@Entity
+@Table(name = "socs")
 public class Soc_Modelo {
 
      @javax.persistence.Id
