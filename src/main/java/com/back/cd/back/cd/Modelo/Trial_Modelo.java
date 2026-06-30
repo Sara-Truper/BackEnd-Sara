@@ -31,6 +31,87 @@ public class Trial_Modelo {
 
     @Column(name = "claveprov")
     private String claveProv;
+    
+    private String fabrica;
+    private String spec;
+    
+    @Column(name="razon_social")
+    private String razonSocial;
+    
+    @Column(name="tipo_orden")
+    private String tipoOrden;
+    
+    @Column(name="tipo_contenedor")
+    private String tipoContenedor;
+    
+    private String almacen;
+    private String centro;
+    @Column(name="requiere_nom")
+    private String requiereNom;
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
+	public String getRazonSocial() {
+		return razonSocial;
+	}
+
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
+	}
+
+	public String getTipoOrden() {
+		return tipoOrden;
+	}
+
+	public void setTipoOrden(String tipoOrden) {
+		this.tipoOrden = tipoOrden;
+	}
+
+	public String getTipoContenedor() {
+		return tipoContenedor;
+	}
+
+	public void setTipoContenedor(String tipoContenedor) {
+		this.tipoContenedor = tipoContenedor;
+	}
+
+	public String getAlmacen() {
+		return almacen;
+	}
+
+	public void setAlmacen(String almacen) {
+		this.almacen = almacen;
+	}
+
+	public String getCentro() {
+		return centro;
+	}
+
+	public void setCentro(String centro) {
+		this.centro = centro;
+	}
+
+	public String getRequiereNom() {
+		return requiereNom;
+	}
+
+	public void setRequiereNom(String requiereNom) {
+		this.requiereNom = requiereNom;
+	}
+
+	public String getFabrica() {
+		return fabrica;
+	}
+
+	public void setFabrica(String fabrica) {
+		this.fabrica = fabrica;
+	}
 
 	public Long getId() {
 		return id;
