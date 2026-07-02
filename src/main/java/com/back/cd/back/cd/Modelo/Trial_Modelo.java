@@ -48,6 +48,24 @@ public class Trial_Modelo {
     private String centro;
     @Column(name="requiere_nom")
     private String requiereNom;
+    private String sellos;
+    @Column(name="contenido_tablas")
+    private String contenidoTablas;
+	public String getContenidoTablas() {
+		return contenidoTablas;
+	}
+
+	public void setContenidoTablas(String contenidoTablas) {
+		this.contenidoTablas = contenidoTablas;
+	}
+
+	public String getSellos() {
+		return sellos;
+	}
+
+	public void setSellos(String sellos) {
+		this.sellos = sellos;
+	}
 
 	public String getSpec() {
 		return spec;

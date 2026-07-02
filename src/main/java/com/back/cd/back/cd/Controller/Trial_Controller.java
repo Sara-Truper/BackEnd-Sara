@@ -26,8 +26,15 @@ public class Trial_Controller {
     public ResponseEntity<?> guardar(@RequestBody Trial_Modelo trial) {
         try {
             Trial_Modelo guardado = trial_Repositorio.save(trial);
+            if (guardado.getFolio() == null || guardado.getFolio().isEmpty()) {
+                String folioAutogenerado = "TRIAL-" + String.format("%04d", guardado.getId());
+                
+                guardado.setFolio(folioAutogenerado);
+                guardado = trial_Repositorio.save(guardado);
+            }
             return ResponseEntity.ok(guardado); 
         } catch (Exception e) {
+        	e.printStackTrace();
             return ResponseEntity.badRequest().body("Error al guardar: " + e.getMessage());
         }
     }
