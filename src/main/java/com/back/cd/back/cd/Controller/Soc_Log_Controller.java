@@ -28,9 +28,6 @@ public class Soc_Log_Controller {
 		private com.back.cd.back.cd.Modelo.Repositorio.Socs_log_repositorio socs_log_repositorio;
 		
 		@GetMapping("/socs")
-//		public List<socsProjection> verTabla() {
-//		    return Service.getTablaSocs();
-//		}
 		public List<SocProjection> getTabla(@RequestParam("usuario") String usuario) {
 		    if ("prueba".equalsIgnoreCase(usuario)) {
 		        return socsRepository.obtenerDataTabla(usuario);
