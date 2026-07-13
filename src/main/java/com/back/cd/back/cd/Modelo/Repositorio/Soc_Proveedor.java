@@ -7,6 +7,11 @@ public interface Soc_Proveedor {
 	String getMoneda();
 	String getC_pag();
 	String getPuerto();
+	String getCalle();
+	String getPoblacion();
+	String getCp();
+	String getTaxid();
+	String getDis1();
 	
 	//fabricas
 	String getSapFabrica();

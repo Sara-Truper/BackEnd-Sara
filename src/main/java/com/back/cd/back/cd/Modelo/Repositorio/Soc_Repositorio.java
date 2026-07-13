@@ -71,9 +71,9 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 					nativeQuery = true)
 				Optional<Soc_Familia_1Item> findcodigos(@Param("codigo") Integer codigo );
 
-					
+			//proveedores
 			@Query(value = ""
-					+ " select distinct(acreedor) as noproveedor, supplier as proveedor, mon as moneda ,c_pag as c_pag, incoterms2 as puerto, descripcion_cond_pago as terminos_de_pago from matriz_cd.lista_proveedores",
+					+ " select distinct(acreedor) as noproveedor, supplier as proveedor, mon as moneda ,c_pag as c_pag, incoterms2 as puerto, descripcion_cond_pago as terminos_de_pago, calle as calle, poblacion as poblacion, cp as cp, nif2 as taxid, distrito as dis1 from matriz_cd.lista_proveedores",
 					nativeQuery = true)
 			List<Soc_Proveedor> getAllProveedores();	
 

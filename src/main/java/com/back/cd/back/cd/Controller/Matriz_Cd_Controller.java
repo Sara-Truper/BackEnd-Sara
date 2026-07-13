@@ -29,9 +29,8 @@ import com.back.cd.back.cd.Modelo.Repositorio.Soc_Familia_1Item;
 
 @RestController
 @RequestMapping("/importaciones/controldocumental")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class Matriz_Cd_Controller {
-
 	@Autowired
 	private Matriz_cd_Repositorio matriz_cd_Repositorio;
 

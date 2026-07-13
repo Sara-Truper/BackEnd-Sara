@@ -28,7 +28,8 @@ import com.back.cd.back.cd.Modelo.Repositorio.Soc_Nuevos;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Proveedor;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Socs_log_repositorio;
-import com.back.cd.back.cd.Modelo.socs_log_modelo.Socs_log_modelo;
+import com.back.cd.back.cd.Modelo.Socs_log_modelo;
+
 
 @RestController
 @RequestMapping("/importaciones/controldocumental")
