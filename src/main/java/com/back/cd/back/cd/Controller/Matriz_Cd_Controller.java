@@ -34,11 +34,16 @@ public class Matriz_Cd_Controller {
 
 	@Autowired
 	private Matriz_cd_Repositorio matriz_cd_Repositorio;
-	
-	@GetMapping("/matrizcd")
-	public List<Matriz_Control_Documental_Modelo> listartodo(){
-		return matriz_cd_Repositorio.findAll();
+
+	@GetMapping("/matrizcd18")
+	public List<Matriz_Control_Documental_Modelo> lista18Meses() {
+		return matriz_cd_Repositorio.BuscarU18meses();
 	}
+	
+//	@GetMapping("/matrizcd")
+//	public List<Matriz_Control_Documental_Modelo> listartodo(){
+//		return matriz_cd_Repositorio.findAll();
+//	}
 	
 	@PostMapping("/matrizcd")
 	public Matriz_Control_Documental_Modelo guardarregistro(@RequestBody Matriz_Control_Documental_Modelo matriz_Control_Documental_Modelo) {

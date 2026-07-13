@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Service;
 
 import com.back.cd.back.cd.Modelo.Arancel_Modelo;
 import com.back.cd.back.cd.Modelo.Fabricas_Modelo;
+
+import com.back.cd.back.cd.Modelo.Tppm_Modelo;
 import com.back.cd.back.cd.Modelo.codigos;
 import com.back.cd.back.cd.Modelo.contactos;
 import com.back.cd.back.cd.Modelo.directos;
@@ -30,6 +34,7 @@ import com.back.cd.back.cd.Modelo.precios;
 import com.back.cd.back.cd.Modelo.wksh;
 import com.back.cd.back.cd.Modelo.Repositorio.Arancel_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Fabricas_Repositorio;
+import com.back.cd.back.cd.Modelo.Repositorio.Tp_Pm_Repository;
 import com.back.cd.back.cd.Modelo.Repositorio.preciosRepository;
 
 
@@ -53,6 +58,9 @@ public class service {
 	private Fabricas_Repositorio fabricas_Repositorio;
 	@Autowired
 	private Arancel_Repositorio arancel_Repositorio;
+
+	@Autowired
+	private Tp_Pm_Repository tp_pm_Repository;
 	
 	@Transactional
 	public void actualizarArancel() throws Exception{
@@ -221,7 +229,9 @@ public class service {
 	        d.setDailymrpsale(getFloat(fila.getCell(6)));
 	        d.setTotal_disponible_pcs(getInt(fila.getCell(13)));
 	        d.setTotal_disponible_days(getInt(fila.getCell(14)));
-	        d.setPo_pm(getInt(fila.getCell(15)));
+	        Cell cell15 = fila.getCell(15);
+	        d.setPo_pm(cell15 == null || cell15.getCellType() == CellType.BLANK ? getInt(fila.getCell(16)) : getInt(cell15) );
+	        d.setPo_th(getInt(fila.getCell(16)));
 	        d.setPo_th(getInt(fila.getCell(16)));
 	        d.setFull_consol(getCellValue(fila.getCell(18)));
 	        d.setStatus_confirmacion(getCellValue(fila.getCell(19)));
@@ -534,13 +544,60 @@ public class service {
 	        }
 	    }
 	}
+	
+	@Transactional
+	public void actualizarTPPM() throws Exception{
+		tp_pm_Repository.Truncartppm();
+		String rutas= "\\\\cernotes\\Formatos Vigentes-PARCELMOBI\\FORMATO REVISADOS.xlsm";
+			String rutaActual=rutas;
+			Workbook wb = WorkbookFactory.create(new FileInputStream(rutaActual));
+		    Sheet sheet = wb.getSheet("TP PO's");
+		    List<Tppm_Modelo> tppm_modelo= new ArrayList<>();
+		    for (int j = 2; j <= sheet.getLastRowNum(); j++) {
+                Row fila = sheet.getRow(j);
+                if (fila == null || getInt(fila.getCell(0)) == 0) continue;
+                Tppm_Modelo c = new Tppm_Modelo();
+                		c.setPo(getInt(fila.getCell(0)));
+                		c.setProveedor(getCellValue(fila.getCell(1)));
+                		c.setPosicion(getInt(fila.getCell(2)));
+                		c.setCantidad(getInt(fila.getCell(7)));
+            			c.setMoneda(getCellValue(fila.getCell(12)));
+            			c.setMaterial(getInt(fila.getCell(13)));
+                		c.setClave(getCellValue(fila.getCell(14)));
+                		c.setPoth(getInt(fila.getCell(27)));
+                		c.setEtd(getDate(fila.getCell(6)));
+                		tppm_modelo.add(c);
+                	if (tppm_modelo.size() >= 500) {
+                        tp_pm_Repository.saveAll(tppm_modelo);
+                        tppm_modelo.clear();
+                    }
+                }
+		    if (!tppm_modelo.isEmpty()) {
+		    	tp_pm_Repository.saveAll(tppm_modelo);
+            }
+		    wb.close();
+	}
+	
 	//FUNCIONES AUX 
 	private LocalDate getDate(Cell cell) {
-	    if (cell != null && DateUtil.isCellDateFormatted(cell)) {
+		String valordecelda = "";
+		LocalDate fechaFormateada = null;
+		if (cell.getCellType() == CellType.STRING) {
+			valordecelda = cell.getStringCellValue().trim();	
+			valordecelda = cell.getStringCellValue().trim();
+			if (valordecelda.contains(".")) {
+		        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		        LocalDate fecha = LocalDate.parse(valordecelda, formatoEntrada);
+		        fechaFormateada = fecha; 
+		    }
+			return fechaFormateada;
+		}else { if (cell != null && DateUtil.isCellDateFormatted(cell)) {
 	        if (cell.getLocalDateTimeCellValue() != null) {
 	            return cell.getLocalDateTimeCellValue().toLocalDate();
 	        }
 	    }
+		
+		}
 	    return null;
 	}
 	
@@ -567,13 +624,13 @@ public class service {
 	}
 	
 	private String getCellValue(Cell cell) {
-
+		
 	    if (cell == null) return "";
 
 	    switch (cell.getCellType()) {
 
 	        case STRING:
-	            return cell.getStringCellValue().trim();
+		            return cell.getStringCellValue().trim();
 
 	        case NUMERIC:
 	            if (DateUtil.isCellDateFormatted(cell)) {
@@ -594,7 +651,7 @@ public class service {
 
 	        case BLANK:
 	            return "";
-
+	        	
 	        default:
 	            return "";
 	    }

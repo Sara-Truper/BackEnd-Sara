@@ -2,6 +2,8 @@ package com.back.cd.back.cd.Controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,5 +39,8 @@ public class Usuario_controller {
 		.orElseThrow(() -> new ResourceNotFoundException("Usuario No Existe: " + Id));
 		return ResponseEntity.ok(usuarios_Modelo);
 	}
-	
+	 @GetMapping("/usuario-pc")
+	 public String getIp(HttpServletRequest request) {
+		    return request.getRemoteAddr();
+		}	
 }

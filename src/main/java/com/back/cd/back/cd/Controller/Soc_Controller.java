@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.back.cd.back.cd.Exception.ResourceNotFoundException;
 import com.back.cd.back.cd.Modelo.AsignacionDTO;
 import com.back.cd.back.cd.Modelo.Soc_Modelo;
-import com.back.cd.back.cd.Modelo.socs_log_modelo;
 import com.back.cd.back.cd.Modelo.Repositorio.ContactosSoc;
 import com.back.cd.back.cd.Modelo.Repositorio.SocProjection;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Familia_1Item;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Nuevos;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Proveedor;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Repositorio;
-import com.back.cd.back.cd.Modelo.Repositorio.socs_log_repositorio;
+import com.back.cd.back.cd.Modelo.Repositorio.Socs_log_repositorio;
+import com.back.cd.back.cd.Modelo.socs_log_modelo.Socs_log_modelo;
 
 @RestController
 @RequestMapping("/importaciones/controldocumental")
@@ -37,8 +37,9 @@ public class Soc_Controller {
 	@Autowired
 	private Soc_Repositorio soc_Repositorio;
 	@Autowired
-	private	socs_log_repositorio socs_log_repositorio;
-	
+	//private	socs_log_repositorio socs_log_repositorio;
+	private	Socs_log_repositorio socs_log_repositorio;
+
 	@GetMapping("/soccompleto/") 
 	public List<Soc_Modelo> listarSocTodo(){
 		return soc_Repositorio.findAll();
@@ -88,8 +89,9 @@ public class Soc_Controller {
 	    registros.forEach(r ->
 	        r.setAsistentepos(dto.getAsistentepos())
 	    );
-	    soc_Repositorio.saveAll(registros);	    
-	    List<socs_log_modelo> logs = socs_log_repositorio.findAllById(dto.getIdsplog());
+	    soc_Repositorio.saveAll(registros);
+	    //List<socs_log_modelo> logs = socs_log_repositorio.findAllById(dto.getIdsplog());
+	    List<Socs_log_modelo> logs = socs_log_repositorio.findAllById(dto.getIdsplog());
 	    logs.forEach(l ->
 	        l.setAsistentepos(dto.getAsistentepos())
 	    );

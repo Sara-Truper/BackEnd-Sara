@@ -9,6 +9,7 @@ import com.back.cd.back.cd.Modelo.Trial_Modelo;
 
 @Repository
 public interface Trial_Repositorio extends JpaRepository<Trial_Modelo, Long>{
+
 	//s boot genera la query select*fromwhere folio=?
 	Optional<Trial_Modelo> findByFolio(String folio);
 }

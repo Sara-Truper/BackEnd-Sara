@@ -9,6 +9,7 @@ import com.back.cd.back.cd.Modelo.codigos;
 
 @Repository
 public interface codigosRepository extends JpaRepository<codigos, Long>{
+
 	@Query(value = ""
 			+ "truncate matriz_cd.codigos",
 			nativeQuery = true)

@@ -39,4 +39,9 @@ public interface Matriz_cd_Repositorio extends JpaRepository<Matriz_Control_Docu
 		nativeQuery = true)
 	Optional<CondicionMatricesBack> CondicionMatrices(@Param("foliott") Long foliott, @Param("nooc") Long nooc);
 	
+	@Query(value = ""
+		+"	SELECT * FROM matriz_cd.matrizcd WHERE fecha_de_recepcion >= NOW() - INTERVAL 18 MONTH",
+			nativeQuery = true)
+	List<Matriz_Control_Documental_Modelo> BuscarU18meses();
+	
 }

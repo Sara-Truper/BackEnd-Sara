@@ -9,6 +9,7 @@ import com.back.cd.back.cd.Modelo.wksh;
 
 @Repository
 public interface wkshRepository extends JpaRepository<wksh, Long>{
+
 	@Query(value = ""
 			+ "truncate matriz_cd.wksh",
 			nativeQuery = true)

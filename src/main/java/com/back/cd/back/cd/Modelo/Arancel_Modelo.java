@@ -1,5 +1,4 @@
 package com.back.cd.back.cd.Modelo;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

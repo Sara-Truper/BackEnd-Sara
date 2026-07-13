@@ -22,5 +22,4 @@ public class Sellos_Controller {
 	public List<sellos_Modelo> listarSellos(){
 		return sellos_Repositorio.findAll();
 	}
-	
 }

@@ -31,8 +31,8 @@ public class Actualizar_Bases_Controller {
 	private preciosRepository preciosRepository;
 	@Autowired
 	private Arancel_Repositorio arancel_Repositorio;
-	
-	@PostMapping("arancel")
+
+	@PostMapping("/arancelpost")
 	public ResponseEntity<Map<String, Object>> arancel(){
 		Map<String, Object> respuesta=new HashMap<>();
 		try {
@@ -46,12 +46,13 @@ public class Actualizar_Bases_Controller {
         }
 	}
 	
-	@GetMapping("/arancel")
+	/*@GetMapping("/arancel")
 	public List<Arancel_Modelo> aranceles(){
 		return arancel_Repositorio.findAll();
-	}
+	}*/
 	
-	@PostMapping("fabricas")
+
+	@PostMapping("/fabricas")
 	public ResponseEntity<Map<String, Object>> fab(){
 		Map<String, Object> respuesta=new HashMap<>();
 		try {
@@ -63,6 +64,11 @@ public class Actualizar_Bases_Controller {
             respuesta.put("message", "Error al actualizar tabla: " + e.getMessage());
             return ResponseEntity.internalServerError().body(respuesta);
         }
+	}
+	
+	@GetMapping("/arancelget")
+	public List<Arancel_Modelo> aranceles(){
+		return arancel_Repositorio.findAll();
 	}
 	
 	@PostMapping("/actualizar")
@@ -121,4 +127,19 @@ public class Actualizar_Bases_Controller {
 	public List<precios> listarPrecios(){
 		return preciosRepository.findAll();
 	}
+	
+	@PostMapping("/actualizar/revisados")
+    public ResponseEntity<Map<String, Object>> ActRevisados() {
+		Map<String, Object> respuesta = new HashMap<>();
+        try {
+            mService.actualizarTPPM();
+            respuesta.put("message", "Revisados Actualizado");
+            return ResponseEntity.ok(respuesta);
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.put("message", "Error al actualizar tablas: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(respuesta);
+        }
+    }
+
 }
