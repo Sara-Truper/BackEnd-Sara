@@ -64,6 +64,10 @@ public class Actualizar_Bases_Controller {
 	public List<Arancel_Modelo> aranceles(){
 		return arancel_Repositorio.findAll();
 	}
+	@GetMapping("/arencelcero")
+	public List<Arancel_Modelo> arancelDifCero(){
+		return arancel_Repositorio.arancelArribadeCero();
+	}
 	
 	@PostMapping("/actualizar")
     public ResponseEntity<Map<String, Object>> actualizar() {

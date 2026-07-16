@@ -32,6 +32,7 @@ public class Tppm_Modelo {
 	private String clave;
 	private long poth;
 	private	LocalDate etd;
+	private float precio;
 	
 	public long getPo() {
 		return po;
@@ -92,6 +93,12 @@ public class Tppm_Modelo {
 	}
 	public void setEtd(LocalDate localDate) {
 		this.etd = localDate;
+	}
+	public float getPrecio() {
+		return precio;
+	}
+	public void setPrecio(float precio) {
+		this.precio = precio;
 	}
 	
 		
