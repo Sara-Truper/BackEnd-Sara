@@ -569,6 +569,7 @@ public class service {
                 		c.setClave(getCellValue(fila.getCell(14)));
                 		c.setPoth(getInt(fila.getCell(27)));
                 		c.setEtd(getDate(fila.getCell(6)));
+                		c.setPrecio(getFloat(fila.getCell(11)));
                 		tppm_modelo.add(c);
                 		
                 	if (tppm_modelo.size() >= 500) {
