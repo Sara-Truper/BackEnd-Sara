@@ -78,7 +78,10 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 			List<Soc_Proveedor> getAllProveedores();	
 
 			@Query(value = ""
-					+ "select Unidad_de_Negocio as unidaddeNegocio , Gte_Responsable_BU as gerenteBU from matriz_cd.contactos",
+					+ "select Unidad_de_Negocio as unidaddeNegocio , Gte_Responsable_BU as gerenteBU, Grupo_de_Planeadores as grupoplan,"
+					+ "Director_SR_de_BU as drsr, Director_JR_de_BU as drjr, Gte_Responsable_BU as gte,"
+					+ "Comprador as comprador, Asistente as asistente, Gerente_planeacion as gteplan,"
+					+ "Planeador_planeacion as planplan from matriz_cd.contactos",
 					nativeQuery = true)
 			List<ContactosSoc> GetContactos();
 

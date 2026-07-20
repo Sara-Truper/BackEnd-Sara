@@ -3,6 +3,7 @@ package com.back.cd.back.cd.Modelo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -32,6 +33,7 @@ public class Soc_Modelo {
      private LocalDate fecha_de_emisionrea;
      private LocalDate fecha_de_reciboactrlpos;
      private Integer foliott;
+     @Column(name = "`full`")
      private String full;
      private String moneda;
      private BigDecimal monto_de_overstock;

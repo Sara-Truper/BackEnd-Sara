@@ -32,7 +32,14 @@ public class Tppm_Modelo {
 	private String clave;
 	private long poth;
 	private	LocalDate etd;
+	private String precios;
 	
+	public String getPrecios() {
+		return precios;
+	}
+	public void setPrecios(String precios) {
+		this.precios = precios;
+	}
 	public long getPo() {
 		return po;
 	}

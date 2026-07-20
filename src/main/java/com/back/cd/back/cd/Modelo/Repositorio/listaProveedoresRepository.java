@@ -10,7 +10,6 @@ import com.back.cd.back.cd.Modelo.listaProveedores;
 
 @Repository
 public interface listaProveedoresRepository extends JpaRepository<listaProveedores, Integer>{
-
 	@Query(value = ""
 			+ "truncate matriz_cd.lista_proveedores",
 			nativeQuery = true)
