@@ -1,0 +1,121 @@
+package com.back.cd.back.cd.Modelo.Repositorio;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.back.cd.back.cd.Modelo.Matriz_Control_Documental_Modelo;
+import com.back.cd.back.cd.Modelo.Soc_Modelo;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.back.cd.back.cd.Modelo.Repositorio.SocProjection;
+import com.back.cd.back.cd.Modelo.Matriz_Control_Documental_Modelo;
+import com.back.cd.back.cd.Modelo.Soc_Modelo;
+
+public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
+	
+
+	@Query(value = ""
+		    + "SELECT DISTINCT "
+		    + "  socs.foliott AS folio_tt, "
+		    + "  socs.nooc AS no_oc, "
+		    + "  socs.unidad_de_negocio, "
+		    + "  socs.no_de_proveedor, "
+		    + "  socs.fecha_de_embarque_de_laoc AS etd_po, "
+		    + "  socs.monto_de_po AS montopi, "
+		    + "  socs.moneda, "
+		    + "  socs.status_de_embarque, "
+		    + "  contactos.Gte_Responsable_BU AS gerente_de_compras, "
+		    + "  contactos.Planeador_planeacion AS confirmador, "
+		    + "  lista_proveedores.supplier AS proveedor, "
+		    + "  COALESCE(directos.pod, 'NA') AS pto_directo, "
+		    + "  COALESCE(wksh.TC_MP, 'N/A') AS validaciones_extraordinarias, "
+		    + "	 pool.status_de_liberacion AS liberada_por_matrices, "
+		    + "	 pool.comentarios AS motivo_matrices , "
+		    + "	 pool.fecha_de_liberacion_rechazo as fecha_matrices "
+		    + " FROM socs "
+		    + " LEFT JOIN contactos ON socs.unidad_de_negocio = contactos.Unidad_de_Negocio "
+		    + " LEFT JOIN lista_proveedores ON lista_proveedores.acreedor = socs.no_de_proveedor "
+		    + " LEFT JOIN directos ON directos.po_pm = socs.foliott "
+		    + " LEFT JOIN wksh ON wksh.Concatenar = CONCAT(COALESCE(socs.no_de_proveedor, ''), COALESCE(socs.unidad_de_negocio, '')) "
+		    + " LEFT JOIN pool ON pool.pi = socs.foliott "
+		    + " WHERE socs.foliott = :folio_tt",
+		    nativeQuery = true)
+		List<SocProjection> crearMzporfolio(@Param("folio_tt") Long folio_tt);
+	
+	Optional<Soc_Modelo> findByFoliott(Integer foliott);
+
+	
+	@Query(value = ""
+			+ " SELECT socs.*, lp.descripcion_cond_pago as terminos_de_pago, lp.supplier as proveedor " 
+           + " FROM matriz_cd.socs socs " 
+           + " JOIN matriz_cd.lista_proveedores lp " 
+           + " ON socs.no_de_proveedor = lp.acreedor " 
+           + " WHERE foliott = :PO_PI OR nooc = :PO_PI "
+           + "LIMIT 1",
+			nativeQuery = true)
+			Optional<Soc_Nuevos> findByNoOrden(@Param("PO_PI") Long poPi);
+			
+			@Query(value = ""
+				+ " Select supplier as proveedor , descripcion_cond_pago as terminos_de_pago from lista_proveedores where acreedor = :no_proveedor limit 1 ",
+				nativeQuery = true)
+			Optional<Soc_Proveedor> findProveedorByNoProv(@Param("no_proveedor") Integer no_proveedor );
+
+			@Query(value = ""
+					+ " select concat(Clave,', Fam: ',FamiliaSAP) as familia_del_producto, UnidadDeNegocio as unidad_de_negocio from codigos where codigo = :codigo ",
+					nativeQuery = true)
+				Optional<Soc_Familia_1Item> findcodigos(@Param("codigo") Integer codigo );
+
+			@Query(value = ""
+					+ " select  distinct(acreedor) as noproveedor, supplier as proveedor , c_pag as clvterm ,descripcion_cond_pago as terminos_de_pago  from matriz_cd.lista_proveedores",
+					nativeQuery = true)
+			List<Soc_Proveedor> getAllProveedores();	
+
+			@Query(value = ""
+					+ "select Unidad_de_Negocio as unidaddeNegocio , Gte_Responsable_BU as gerenteBU, Grupo_de_Planeadores as grupoplan,"
+					+ "Director_SR_de_BU as drsr, Director_JR_de_BU as drjr, Gte_Responsable_BU as gte,"
+					+ "Comprador as comprador, Asistente as asistente, Gerente_planeacion as gteplan,"
+					+ "Planeador_planeacion as planplan from matriz_cd.contactos",
+					nativeQuery = true)
+			List<ContactosSoc> GetContactos();
+
+			@Query(value = "SELECT DISTINCT " +
+		            "s.asistentepos AS usuario, " +
+		            "s.colocador AS colocador, " +
+		            "s.no_de_proveedor AS noProveedor, " +
+		            "lp.supplier AS nombreProveedor, " +
+		            "s.foliott AS noPo, " +
+		            "s.nooc AS noNl, " +
+		            "s.status_problema AS statusProblema, " +
+		            "s.unidad_de_negocio AS unidadDeNegocio, " +
+		            "c.gte_responsable_bu AS gerente, " +
+		            "s.rea AS rea, " +
+		            "s.reimp AS reimp, "+
+		            "s.fecha_de_emisionrea AS fecha_revisado"+
+		            "s.fecha_de_emisionoc AS fechaEmision, " +
+		            "ld.autorizacionPrevia AS autorizacionPrevia, "+
+		            "s.fecha_de_emisionoc AS fechaInicial, " +
+		            "s.fecha_de_reciboactrlpos AS reciboctrlpos , "+
+		            "s.observaciones AS observaciones, " +
+		            "s.envio_de_laocal_proveedoreoc AS enviada, "+
+		            "ld.numero_reimp AS numero, " +
+		            "ld.comentarios_doc AS comentarios, " +
+		            "COALESCE(ld.status_reimp, 'Abierta') AS statusre, " +
+		            "ld.fefi_plan AS fefi, " +
+		            "ld.comments_plan AS comments, " +
+		            "ld.fef_compras AS fef " +
+		            "ld.comentarios_compras AS com, " +
+		            "FROM socs s " + 
+		            "LEFT JOIN contactos c ON s.unidad_de_negocio = c.unidad_de_negocio " +
+		            "LEFT JOIN lista_proveedores lp ON s.no_de_proveedor = lp.acreedor " +
+		            "LEFT JOIN socs_log ld ON s.foliott = ld.no_po " + 
+		            "WHERE :usuario = 'prueba' OR TRIM(s.asistentepos) = :usuario", 
+		            nativeQuery = true)
+		    List<SocProjection> obtenerDataTabla(@Param("usuario") String usuario);
+}
