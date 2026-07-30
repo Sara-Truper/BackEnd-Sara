@@ -17,11 +17,13 @@ import com.back.cd.back.cd.Modelo.MatrizCalculadora_Modelo;
 import com.back.cd.back.cd.Modelo.Tppm_Modelo;
 import com.back.cd.back.cd.Modelo.codigos;
 import com.back.cd.back.cd.Modelo.precios;
+import com.back.cd.back.cd.Modelo.wksh;
 import com.back.cd.back.cd.Modelo.Repositorio.Arancel_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Matriz_Calculadora_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Tp_Pm_Repository;
 import com.back.cd.back.cd.Modelo.Repositorio.codigosRepository;
 import com.back.cd.back.cd.Modelo.Repositorio.preciosRepository;
+import com.back.cd.back.cd.Modelo.Repositorio.wkshRepository;
 
 @RestController
 @CrossOrigin
@@ -39,6 +41,8 @@ public class Actualizar_Bases_Controller {
 	private Tp_Pm_Repository tp_Pm_Repository;
 	@Autowired 
 	private Matriz_Calculadora_Repositorio matriz_Calculadora_Repositorio;
+	@Autowired
+	private wkshRepository wkshRepository;
 
 	@PostMapping("/arancelpost")
 	public ResponseEntity<Map<String, Object>> arancel(){
@@ -176,5 +180,10 @@ public class Actualizar_Bases_Controller {
 	@GetMapping("/revisadosall")
 	public List<Tppm_Modelo> listarrevisados(){
 		return tp_Pm_Repository.findAll();
+	}
+	
+	@GetMapping("/wkshall")
+	public List<wksh> listarwksh(){
+		return wkshRepository.findAll();
 	}
 }

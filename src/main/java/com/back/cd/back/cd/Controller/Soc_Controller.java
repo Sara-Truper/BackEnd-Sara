@@ -106,6 +106,10 @@ public class Soc_Controller {
 		Soc_Modelo soc_modelo = soc_Repositorio.findById(Id)
 				.orElseThrow(() -> new ResourceNotFoundException("Registro No Encontrado : " + Id) );
 	 soc_modelo.setAplica(soc_modeloReg.getAplica());
+	 soc_modelo.setEnviodc(soc_modeloReg.getEnviodc());
+	 soc_modelo.setEnviodp(soc_modeloReg.getEnviodp());
+	 soc_modelo.setEnviosap(soc_modeloReg.getEnviosap());
+	 soc_modelo.setEnviocolocacion(soc_modeloReg.getEnviocolocacion());
 	 soc_modelo.setAsistentepos(soc_modeloReg.getAsistentepos());
 	 soc_modelo.setColocador(soc_modeloReg.getColocador());
 	 soc_modelo.setConfirmacion_de_proforma_por_parte_del_proveedor(soc_modeloReg.getConfirmacion_de_proforma_por_parte_del_proveedor());

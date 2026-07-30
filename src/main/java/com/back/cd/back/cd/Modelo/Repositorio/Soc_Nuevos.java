@@ -36,5 +36,8 @@ public interface Soc_Nuevos {
 	String getUnidad_de_negocio();
 	String getTerminos_de_pago();
 	String getProveedor();
-
+	String getEnviodc();
+	String getEnviodp();
+	String getEnviosap();
+	String getEnviocolocacion();
 }

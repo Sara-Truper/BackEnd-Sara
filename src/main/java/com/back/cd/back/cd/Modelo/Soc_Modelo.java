@@ -51,6 +51,34 @@ public class Soc_Modelo {
      private String ubicacion_en_archivo;
      private String unidad_de_negocio;
      private String reimp;
+     private LocalDate enviodc;
+     private LocalDate enviodp;
+     private String enviosap;
+     private String enviocolocacion;
+	public LocalDate getEnviodp() {
+		return enviodp;
+	}
+	public void setEnviodp(LocalDate enviodp) {
+		this.enviodp = enviodp;
+	}
+	public String getEnviosap() {
+		return enviosap;
+	}
+	public void setEnviosap(String enviosap) {
+		this.enviosap = enviosap;
+	}
+	public String getEnviocolocacion() {
+		return enviocolocacion;
+	}
+	public void setEnviocolocacion(String enviocolocacion) {
+		this.enviocolocacion = enviocolocacion;
+	}
+	public LocalDate getEnviodc() {
+		return enviodc;
+	}
+	public void setEnviodc(LocalDate enviodc) {
+		this.enviodc = enviodc;
+	}
 	public String getReimp() {
 		return reimp;
 	}

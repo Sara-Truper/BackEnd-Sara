@@ -12,8 +12,9 @@ public interface Soc_Proveedor {
 	String getPoblacion();
 	String getCp();
 	String getTaxid();
+	String getTaxid2();
 	String getDis1();
-	
+
 	//fabricas
 	String getSapFabrica();
     String getNombreFabrica();

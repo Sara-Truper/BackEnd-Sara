@@ -74,9 +74,7 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 			//proveedores
 			@Query(value = ""
 
-					+ " select distinct(acreedor) as noproveedor, supplier as proveedor, mon as moneda ,c_pag as c_pag, incoterms2 as puerto, descripcion_cond_pago as terminos_de_pago, calle as calle, poblacion as poblacion, cp as cp, nif2 as taxid, distrito as dis1 from matriz_cd.lista_proveedores"
-
-					+ " select  distinct(acreedor) as noproveedor, supplier as proveedor , c_pag as clvterm ,descripcion_cond_pago as terminos_de_pago  from matriz_cd.lista_proveedores",
+					+ " select distinct(acreedor) as noproveedor, supplier as proveedor, mon as moneda ,c_pag as c_pag, incoterms2 as puerto, descripcion_cond_pago as terminos_de_pago, calle as calle, poblacion as poblacion, cp as cp, nif2 as taxid, nif as taxid2, distrito as dis1 from matriz_cd.lista_proveedores",
 
 					nativeQuery = true)
 			List<Soc_Proveedor> getAllProveedores();	
@@ -108,6 +106,7 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 		            "s.fecha_de_reciboactrlpos AS reciboctrlpos , "+
 		            "s.observaciones AS observaciones, " +
 		            "s.envio_de_laocal_proveedoreoc AS enviada, "+
+		            "s.enviodp as enviodp,"+
 		            "ld.numero_reimp AS numero, " +
 		            "ld.comentarios_doc AS comentarios, " +
 		            "COALESCE(ld.status_reimp, 'Abierta') AS statusre, " +
