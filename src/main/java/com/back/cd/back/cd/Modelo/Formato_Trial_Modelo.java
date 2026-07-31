@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name="trial_order")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Trial_Modelo {
+public class Formato_Trial_Modelo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

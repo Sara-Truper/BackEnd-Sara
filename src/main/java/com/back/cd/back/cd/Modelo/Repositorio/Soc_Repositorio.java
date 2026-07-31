@@ -81,10 +81,14 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 			List<Soc_Proveedor> getAllProveedores();	
 
 			@Query(value = ""
-					+ "select Unidad_de_Negocio as unidaddeNegocio , Gte_Responsable_BU as gerenteBU from matriz_cd.contactos",
+					+ "select Unidad_de_Negocio as unidaddeNegocio , Gte_Responsable_BU as gerenteBU, Grupo_de_Planeadores as grupoplan,"
+					+ "Director_SR_de_BU as drsr, Director_JR_de_BU as drjr, Gte_Responsable_BU as gte,"
+					+ "Comprador as comprador, Asistente as asistente, Gerente_planeacion as gteplan,"
+					+ "Planeador_planeacion as planplan from matriz_cd.contactos",
 					nativeQuery = true)
 			List<ContactosSoc> GetContactos();
-
+			
+			
 			@Query(value = "SELECT DISTINCT " +
 		            "s.asistentepos AS usuario, " +
 		            "s.colocador AS colocador, " +
@@ -104,6 +108,7 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 		            "s.fecha_de_reciboactrlpos AS reciboctrlpos , "+
 		            "s.observaciones AS observaciones, " +
 		            "s.envio_de_laocal_proveedoreoc AS enviada, "+
+		            "s.enviodp as enviodp,"+
 		            "ld.numero_reimp AS numero, " +
 		            "ld.comentarios_doc AS comentarios, " +
 		            "COALESCE(ld.status_reimp, 'Abierta') AS statusre, " +
@@ -118,4 +123,13 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 		            "WHERE :usuario = 'prueba' OR TRIM(s.asistentepos) = :usuario", 
 		            nativeQuery = true)
 		    List<SocProjection> obtenerDataTabla(@Param("usuario") String usuario);
+
+			
+			@Query(value = ""
+				    + "SELECT *  FROM matriz_cd.socs "
+				    + "WHERE fecha_de_emisionoc >= DATE_SUB(CURDATE(), INTERVAL 18 MONTH)",
+				    nativeQuery = true)
+				List<Soc_Modelo> Soc18meses();
+			
+			
 }

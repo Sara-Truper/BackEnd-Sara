@@ -13,11 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.back.cd.back.cd.Modelo.Arancel_Modelo;
+import com.back.cd.back.cd.Modelo.MatrizCalculadora_Modelo;
+import com.back.cd.back.cd.Modelo.Tppm_Modelo;
 import com.back.cd.back.cd.Modelo.codigos;
 import com.back.cd.back.cd.Modelo.precios;
+import com.back.cd.back.cd.Modelo.wksh;
 import com.back.cd.back.cd.Modelo.Repositorio.Arancel_Repositorio;
+import com.back.cd.back.cd.Modelo.Repositorio.Matriz_Calculadora_Repositorio;
+import com.back.cd.back.cd.Modelo.Repositorio.Tp_Pm_Repository;
 import com.back.cd.back.cd.Modelo.Repositorio.codigosRepository;
 import com.back.cd.back.cd.Modelo.Repositorio.preciosRepository;
+import com.back.cd.back.cd.Modelo.Repositorio.wkshRepository;
 
 @RestController
 @CrossOrigin
@@ -31,7 +37,13 @@ public class Actualizar_Bases_Controller {
 	private preciosRepository preciosRepository;
 	@Autowired
 	private Arancel_Repositorio arancel_Repositorio;
-	
+	@Autowired
+	private Tp_Pm_Repository tp_Pm_Repository;
+	@Autowired 
+	private Matriz_Calculadora_Repositorio matriz_Calculadora_Repositorio;
+	@Autowired
+	private wkshRepository wkshRepository;
+
 	@PostMapping("/arancelpost")
 	public ResponseEntity<Map<String, Object>> arancel(){
 		Map<String, Object> respuesta=new HashMap<>();
@@ -45,6 +57,12 @@ public class Actualizar_Bases_Controller {
             return ResponseEntity.internalServerError().body(respuesta);
         }
 	}
+	
+	/*@GetMapping("/arancel")
+	public List<Arancel_Modelo> aranceles(){
+		return arancel_Repositorio.findAll();
+	}*/
+	
 
 	@PostMapping("/fabricas")
 	public ResponseEntity<Map<String, Object>> fab(){
@@ -116,6 +134,25 @@ public class Actualizar_Bases_Controller {
         }
 	}
 	
+	@PostMapping("/matrizcalc")
+	public ResponseEntity<Map<String, Object>> matrizcalculadora(){
+		Map<String, Object> respuesta = new HashMap<>();
+        try {
+            mService.actualizarMatrizCalculadora();
+            respuesta.put("message", "Tabla matriz_calculadora actualizada con éxito");
+            return ResponseEntity.ok(respuesta);
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.put("message", "Error al actualizar tabla: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(respuesta);
+        }
+	}
+	
+	@GetMapping("/matrizcalculadoraall")
+	public List<MatrizCalculadora_Modelo> listarmatcalc(){
+		return matriz_Calculadora_Repositorio.findAll();
+	}
+	
 	@GetMapping("/codigosall")
 	public List<codigos> listarCodigos(){
 		return CodigosRepository.findAll();
@@ -140,4 +177,13 @@ public class Actualizar_Bases_Controller {
         }
     }
 
+	@GetMapping("/revisadosall")
+	public List<Tppm_Modelo> listarrevisados(){
+		return tp_Pm_Repository.findAll();
+	}
+	
+	@GetMapping("/wkshall")
+	public List<wksh> listarwksh(){
+		return wkshRepository.findAll();
+	}
 }

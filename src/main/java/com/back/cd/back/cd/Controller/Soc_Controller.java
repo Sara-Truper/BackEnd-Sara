@@ -41,9 +41,16 @@ public class Soc_Controller {
 	private	Socs_log_repositorio socs_log_repositorio;
 	
 	@GetMapping("/soccompleto/") 
-	public List<Soc_Modelo> listarSocTodo(){
-		return soc_Repositorio.findAll();
-	}
+		public List<Soc_Modelo> listarSocTodo(){
+			return soc_Repositorio.findAll();
+		}
+
+  // @GetMapping("/soccompleto/") 
+		// 	public List<Soc_Modelo> listarSocTodo(){
+		// 		return soc_Repositorio.Soc18meses();
+		// 	}
+
+	
 	@GetMapping("/matrizcd/nuevapo/new/{folio_tt}")
 	public List<SocProjection> crearMzRegistro(@PathVariable("folio_tt") Long folio_tt) {
 	    return soc_Repositorio.crearMzporfolio(folio_tt);
@@ -103,6 +110,10 @@ public class Soc_Controller {
 		Soc_Modelo soc_modelo = soc_Repositorio.findById(Id)
 				.orElseThrow(() -> new ResourceNotFoundException("Registro No Encontrado : " + Id) );
 	 soc_modelo.setAplica(soc_modeloReg.getAplica());
+	 soc_modelo.setEnviodc(soc_modeloReg.getEnviodc());
+	 soc_modelo.setEnviodp(soc_modeloReg.getEnviodp());
+	 soc_modelo.setEnviosap(soc_modeloReg.getEnviosap());
+	 soc_modelo.setEnviocolocacion(soc_modeloReg.getEnviocolocacion());
 	 soc_modelo.setAsistentepos(soc_modeloReg.getAsistentepos());
 	 soc_modelo.setColocador(soc_modeloReg.getColocador());
 	 soc_modelo.setConfirmacion_de_proforma_por_parte_del_proveedor(soc_modeloReg.getConfirmacion_de_proforma_por_parte_del_proveedor());
@@ -148,7 +159,7 @@ public class Soc_Controller {
 	public List<ContactosSoc> TraerContactos(){
 		return soc_Repositorio.GetContactos();
 	}
-		@GetMapping("/familia/{codigo}")
+	@GetMapping("/familia/{codigo}")
 	public Optional<Soc_Familia_1Item> getFamilia(@PathVariable("codigo") Integer codigo){
 		return soc_Repositorio.findcodigos(codigo);
 	}
