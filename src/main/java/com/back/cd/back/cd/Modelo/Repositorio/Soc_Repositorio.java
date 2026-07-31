@@ -73,8 +73,10 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 
 			//proveedores
 			@Query(value = ""
-
-					+ " select distinct(acreedor) as noproveedor, supplier as proveedor, mon as moneda ,c_pag as c_pag, incoterms2 as puerto, descripcion_cond_pago as terminos_de_pago, calle as calle, poblacion as poblacion, cp as cp, nif2 as taxid, nif as taxid2, distrito as dis1 from matriz_cd.lista_proveedores",
+				+ " select distinct(acreedor) as noproveedor, supplier as proveedor, mon as moneda ,"
+				+ "c_pag as c_pag, incoterms2 as puerto, descripcion_cond_pago as terminos_de_pago, "
+				+ "calle as calle, poblacion as poblacion, cp as cp, nif2 as taxid, distrito as dis1 "
+				+ "from matriz_cd.lista_proveedores", 
 
 					nativeQuery = true)
 			List<Soc_Proveedor> getAllProveedores();	
@@ -86,7 +88,8 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 					+ "Planeador_planeacion as planplan from matriz_cd.contactos",
 					nativeQuery = true)
 			List<ContactosSoc> GetContactos();
-
+			
+			
 			@Query(value = "SELECT DISTINCT " +
 		            "s.asistentepos AS usuario, " +
 		            "s.colocador AS colocador, " +
@@ -121,4 +124,13 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 		            "WHERE :usuario = 'prueba' OR TRIM(s.asistentepos) = :usuario", 
 		            nativeQuery = true)
 		    List<SocProjection> obtenerDataTabla(@Param("usuario") String usuario);
+
+			
+			@Query(value = ""
+				    + "SELECT *  FROM matriz_cd.socs "
+				    + "WHERE fecha_de_emisionoc >= DATE_SUB(CURDATE(), INTERVAL 18 MONTH)",
+				    nativeQuery = true)
+				List<Soc_Modelo> Soc18meses();
+			
+			
 }

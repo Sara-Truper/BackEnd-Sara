@@ -94,4 +94,8 @@ public class MatrizCalculadora_Modelo {
 	public void setZcom_zpt_zmp(String zcom_zpt_zmp) {
 		this.zcom_zpt_zmp = zcom_zpt_zmp;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> emma/master

@@ -12,6 +12,7 @@ public interface Soc_Proveedor {
 	String getPoblacion();
 	String getCp();
 	String getTaxid();
+<<<<<<< HEAD
 	String getTaxid2();
 	String getDis1();
 
@@ -19,4 +20,12 @@ public interface Soc_Proveedor {
 	String getSapFabrica();
     String getNombreFabrica();
     
+=======
+	String getDis1();
+	
+	//fabricas
+	String getSapFabrica();
+    String getNombreFabrica();
+	
+>>>>>>> emma/master
 }

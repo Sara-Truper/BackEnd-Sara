@@ -582,7 +582,53 @@ public class service {
             }
 		    wb.close();
 	}
+	@Transactional 
+	public void actualizarMatrizCalculadora() throws Exception{
+		IOUtils.setByteArrayMaxOverride(200_000_000);
+		File archivo = null;
+		for(int d=0; d<10; d++) {
+			String fecha = java.time.LocalDate.now().minusDays(d).format(java.time.format.DateTimeFormatter.ofPattern("ddMMyy"));
+			String ruta="\\\\Cernotes\\seguimiento ordenes de compra imports\\Calculadora\\Listado de Items-Proveedores con matriz firmada o de Referencia al "+fecha+".xlsx";
+			File archivoO = new File(ruta);
+            if (archivoO.exists()) {
+                archivo = archivoO;
+                break;
+            }
+		}
+		try (InputStream is = new FileInputStream(archivo);
+	             Workbook wb = WorkbookFactory.create(is)) {
+	    Sheet sheet = wb.getSheetAt(0);
+	    matriz_Calculadora_Repositorio.TruncarMatrizCalculadora();
+	    
+	    List<MatrizCalculadora_Modelo> matrizCalc = new ArrayList<>();
+        for(int i = 6; i <= sheet.getLastRowNum(); i++) {
+        	Row fila= sheet.getRow(i);
+        	
+        	MatrizCalculadora_Modelo mc=new MatrizCalculadora_Modelo();
+        	mc.setCodigo(getCellValue(fila.getCell(0)));
+        	mc.setClave(getCellValue(fila.getCell(1)));
+        	mc.setDescripcion(getCellValue(fila.getCell(2)));
+        	mc.setFamilia(getCellValue(fila.getCell(3)));
+        	mc.setBu(getCellValue(fila.getCell(4)));
+        	mc.setTipomatriz(getCellValue(fila.getCell(5)));
+        	mc.setNo_proveedor(getCellValue(fila.getCell(6)));
+        	mc.setProveedor(getCellValue(fila.getCell(7)));        	
+            
+        	matrizCalc.add(mc);
+        	if (matrizCalc.size() >= 500) {
+                matriz_Calculadora_Repositorio.saveAll(matrizCalc);
+                matrizCalc.clear();
+            }
+
+        }
+        if (!matrizCalc.isEmpty()) {
+        	matriz_Calculadora_Repositorio.saveAll(matrizCalc);
+        }
+		} catch (Exception e) {
+            System.err.println("Error al abrir " + archivo.getName() + ": " + e.getMessage());
+        }
 	
+<<<<<<< HEAD
 	@Transactional 
 	public void actualizarMatrizCalculadora() throws Exception{
 		IOUtils.setByteArrayMaxOverride(200_000_000);
@@ -634,6 +680,10 @@ public class service {
 	
 	}
 	
+=======
+	}
+
+>>>>>>> emma/master
 	//FUNCIONES AUX 
 	private LocalDate getDate(Cell cell) {
 		String valordecelda = "";

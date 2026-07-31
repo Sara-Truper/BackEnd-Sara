@@ -60,5 +60,4 @@ public class Soc_Log_Controller {
 	            return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
 	        }
 	    }
-		
 	}
