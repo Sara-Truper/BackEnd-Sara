@@ -42,21 +42,9 @@ public class Soc_Controller {
 	private	Socs_log_repositorio socs_log_repositorio;
 
 	@GetMapping("/soccompleto/") 
-<<<<<<< HEAD
 	public List<Soc_Modelo> listarSocTodo(){
 		return soc_Repositorio.findAll();
 	}
-=======
-		public List<Soc_Modelo> listarSocTodo(){
-			return soc_Repositorio.findAll();
-		}
-
-  // @GetMapping("/soccompleto/") 
-		// 	public List<Soc_Modelo> listarSocTodo(){
-		// 		return soc_Repositorio.Soc18meses();
-		// 	}
-
->>>>>>> emma/master
 	
 	@GetMapping("/matrizcd/nuevapo/new/{folio_tt}")
 	public List<SocProjection> crearMzRegistro(@PathVariable("folio_tt") Long folio_tt) {

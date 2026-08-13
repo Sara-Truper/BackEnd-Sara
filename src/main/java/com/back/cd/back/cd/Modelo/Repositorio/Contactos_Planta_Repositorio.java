@@ -4,12 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.back.cd.back.cd.Modelo.MatrizCalculadora_Modelo;
+import com.back.cd.back.cd.Modelo.Contactos_Planta_Modelo;
 
 @Repository
-public interface Matriz_Calculadora_Repositorio extends JpaRepository<MatrizCalculadora_Modelo, Long>{
+public interface Contactos_Planta_Repositorio extends JpaRepository<Contactos_Planta_Modelo, Long>{
 	@Query(value = ""
-			+ "truncate matriz_cd.matriz_calculadora",
+			+ "truncate matriz_cd.contactos_planta",
 			nativeQuery = true)
-		void TruncarMatrizCalculadora() ;
+		void TruncarContactosPlanta();
 }
