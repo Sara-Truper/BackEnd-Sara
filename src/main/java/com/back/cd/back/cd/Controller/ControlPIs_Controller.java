@@ -14,7 +14,7 @@ import com.back.cd.back.cd.Modelo.Repositorio.Control_PIs_Repositorio;
 @RestController
 @RequestMapping("/seguimiento/planta")
 @CrossOrigin(origins = "*")
-public class ControlPIs_Controller {
+public class ControlPIs_Controller{
 	@Autowired
 	private Control_PIs_Repositorio control_PIs_Repositorio;
 	
