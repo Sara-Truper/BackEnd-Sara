@@ -42,7 +42,11 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 	
 	Optional<Soc_Modelo> findByFoliott(Integer foliott);
 
-	
+	@Query(value = ""
+		    + "select * from matriz_cd.socs where unidad_de_negocio not like 'P L A N T A %'",
+		    nativeQuery = true)
+		List<Soc_Modelo> SocsinPlanta();
+		
 	@Query(value = ""
 			+ " SELECT socs.*, lp.descripcion_cond_pago as terminos_de_pago, lp.supplier as proveedor " 
            + " FROM matriz_cd.socs socs " 

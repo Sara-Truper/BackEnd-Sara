@@ -40,15 +40,17 @@ public class Soc_Controller {
 	@Autowired
 	private	Socs_log_repositorio socs_log_repositorio;
 
-	@GetMapping("/soccompleto/") 
+	@GetMapping("/soccompleto/")
 	public List<Soc_Modelo> listarSocTodo(){
-		return soc_Repositorio.findAll();
+		return soc_Repositorio.SocsinPlanta(); // cambie este de findall a consulta personalizada
 	}
 	
 	@GetMapping("/matrizcd/nuevapo/new/{folio_tt}")
 	public List<SocProjection> crearMzRegistro(@PathVariable("folio_tt") Long folio_tt) {
 	    return soc_Repositorio.crearMzporfolio(folio_tt);
 	}
+	
+	
 
 	@GetMapping("/seguimientooc/{poPi}")
 	public Optional<Soc_Nuevos> traeSocPorOrden(@PathVariable("poPi") long poPi) {
