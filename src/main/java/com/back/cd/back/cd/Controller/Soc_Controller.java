@@ -38,7 +38,6 @@ public class Soc_Controller {
 	@Autowired
 	private Soc_Repositorio soc_Repositorio;
 	@Autowired
-	//private	socs_log_repositorio socs_log_repositorio;
 	private	Socs_log_repositorio socs_log_repositorio;
 
 	@GetMapping("/soccompleto/") 

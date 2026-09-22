@@ -21,7 +21,7 @@ import com.back.cd.back.cd.Modelo.Repositorio.Historial_Soc_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Repositorio;
 
 @RestController
-@CrossOrigin
+@CrossOrigin (origins="*")
 @RequestMapping("/importaciones/historialsoc")
 public class Historial_Soc_Controlles {
 

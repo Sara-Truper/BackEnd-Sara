@@ -1,26 +1,31 @@
 package com.back.cd.back.cd.Modelo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
- 
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
- 
+
 @Entity
 @Table(name = "Planta_soc")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Planta_Soc_Modelo {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long Id;
+	private LocalDateTime fecha_de_creacion;
 	private long po;
 	private String comprador;
+	private String colocador;
+	private String confirmador;	
 	private long no_de_proveedor;
 	private String proveedor;
 	private String tipo;
@@ -50,6 +55,31 @@ public class Planta_Soc_Modelo {
 	private String enviada;
 	private String er_comentario;
 	private String motivo_de_revisado;
+	
+	public String getConfirmador() {
+		return confirmador;
+	}
+	public void setConfirmador(String confirmador) {
+		this.confirmador = confirmador;
+	}
+	public LocalDateTime getFecha_de_creacion() {
+		return fecha_de_creacion;
+	}
+	public void setFecha_de_creacion(LocalDateTime fecha_de_creacion) {
+		this.fecha_de_creacion = fecha_de_creacion;
+	}
+	public String getColocador() {
+		return colocador;
+	}
+	public void setColocador(String colocador) {
+		this.colocador = colocador;
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 	public long getId() {
 		return Id;
 	}
@@ -236,5 +266,6 @@ public class Planta_Soc_Modelo {
 	public void setMotivo_de_revisado(String motivo_de_revisado) {
 		this.motivo_de_revisado = motivo_de_revisado;
 	}
-
+	
+	
 }

@@ -736,6 +736,8 @@ public class service {
         if (!bufferPlanta.isEmpty()) {
         	buffer_Repositorio.saveAll(bufferPlanta);
         }
+        buffer_Repositorio.limpiarSocsPlanta();
+        buffer_Repositorio.bufferASocs();
 		} catch (Exception e) {
             System.err.println("Error al abrir " + archivo.getName() + ": " + e.getMessage());
         }}
@@ -796,7 +798,6 @@ public class service {
         	contactos_Planta_Repositorio.saveAll(contactosPlan);
         }
     }
-	
 	
 	@Transactional
 	public void actualizarControlPIs() throws Exception{
