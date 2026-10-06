@@ -44,6 +44,10 @@ public class Soc_Controller {
 	public List<Soc_Modelo> listarSocTodo(){
 		return soc_Repositorio.SocsinPlanta(); // cambie este de findall a consulta personalizada
 	}
+	@GetMapping("/soccompleto/Calcu/") 
+	public List<Soc_Modelo> ConsultaAll(){
+		return soc_Repositorio.findAll(); 
+	}
 	
 	@GetMapping("/matrizcd/nuevapo/new/{folio_tt}")
 	public List<SocProjection> crearMzRegistro(@PathVariable("folio_tt") Long folio_tt) {

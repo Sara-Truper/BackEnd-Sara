@@ -136,5 +136,4 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 				    nativeQuery = true)
 				List<Soc_Modelo> Soc18meses();
 			
-			
 }

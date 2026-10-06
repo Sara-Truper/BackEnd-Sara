@@ -567,7 +567,7 @@ public class service {
 	@Transactional
 	public void actualizarTPPM() throws Exception{
 		tp_pm_Repository.Truncartppm();
-		String rutas= "\\\\cernotes\\Publico\\Z_FormatoTEST\\TST Rev\\BaseCalc.xlsm";
+		String rutas= "\\\\cernotes\\Publico\\Z_FormatoTEST\\TST Rev\\BaseCalc.xlsx";
 			String rutaActual=rutas;
 			Workbook wb = WorkbookFactory.create(new FileInputStream(rutaActual));
 			Sheet sheet = wb.getSheet("Hoja1");
@@ -759,7 +759,6 @@ public class service {
         	c.setGerente_planner(getCellValue(r.getCell(2)));
         	c.setDescripcion(getCellValue(r.getCell(3)));
         	c.setComprador(getCellValue(r.getCell(4)));
-        	
         	codigosPlan.add(c);
         }
         if (codigosPlan.size() >= 500) {
@@ -788,6 +787,8 @@ public class service {
         	c.setRol(getCellValue(r.getCell(3)));
         	c.setCorrespondencia(getCellValue(r.getCell(4)));
         	c.setBu(getCellValue(r.getCell(5)));
+        	/*c.setCorrespondencia(getCellValue(r.getCell(5)));
+        	c.setBu(getCellValue(r.getCell(6)));*/
         	contactosPlan.add(c);
         }
         if (contactosPlan.size() >= 500) {
@@ -814,7 +815,14 @@ public class service {
         	
         	if (r == null || getInt(r.getCell(0)) == 0) continue;
         	Control_PIs_Modelo c= new Control_PIs_Modelo();
-        	c.setNopo(getCellValue(r.getCell(0)));
+        	
+        	String valorCelda = getCellValue(r.getCell(0));
+        	if (valorCelda != null && (valorCelda.startsWith("8") || valorCelda.startsWith("7"))) { 
+        	    c.setNopo8(valorCelda); 
+        	}else if(valorCelda != null && valorCelda.startsWith("1")){
+        		c.setNopo1(valorCelda);
+        	}
+        	//c.setNopo(getCellValue(r.getCell(0)));
         	c.setRazonsocial(getCellValue(r.getCell(18)));
         	c.setIncoterm(getCellValue(r.getCell(19)));
         	c.setPuerto(getCellValue(r.getCell(20)));

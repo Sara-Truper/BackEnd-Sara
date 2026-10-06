@@ -17,7 +17,7 @@ import com.back.cd.back.cd.Modelo.Matriz_Control_Documental_Modelo;
 import com.back.cd.back.cd.Modelo.Repositorio.Control_PIs_Repositorio;
 
 @RestController
-@RequestMapping("/seguimiento/planta")
+@RequestMapping("record/seguimiento/planta")
 @CrossOrigin(origins = "*")
 public class ControlPIs_Controller{
 	@Autowired

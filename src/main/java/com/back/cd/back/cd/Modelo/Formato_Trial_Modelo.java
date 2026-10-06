@@ -53,7 +53,16 @@ public class Formato_Trial_Modelo {
     private String contenidoTablas;
     @Column(name="pod")
     private String pod;
-    private String nombrefabrica;
+    private String buprovalternos;
+    public String getBuprovalternos() {
+		return buprovalternos;
+	}
+
+	public void setBuprovalternos(String buprovalternos) {
+		this.buprovalternos = buprovalternos;
+	}
+
+	private String nombrefabrica;
 	public String getNombrefabrica() {
 		return nombrefabrica;
 	}
