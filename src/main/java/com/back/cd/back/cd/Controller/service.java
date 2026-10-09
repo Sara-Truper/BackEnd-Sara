@@ -122,7 +122,8 @@ public class service {
 	@Transactional
 	public void actualizarFabricas() throws Exception{
 		IOUtils.setByteArrayMaxOverride(200_000_000);
-		String ruta="\\\\cernotes\\A_Apoyo Sistema\\Fabricas Importaciones.xlsx";
+		//String ruta="\\\\cernotes\\A_Apoyo Sistema\\Fabricas Importaciones.xlsx";
+		String ruta="C:\\Users\\srodriguezg\\Downloads\\Copia de Fabricas Importaciones.xlsx";
 		Workbook wb= WorkbookFactory.create(new FileInputStream(ruta));
 		Sheet sheet= wb.getSheetAt(0);
 		fabricas_Repositorio.Truncarfabricas();
@@ -162,8 +163,12 @@ public class service {
 	public void actualizarProveedores() throws Exception{
 		IOUtils.setByteArrayMaxOverride(200_000_000);
 		//\\cernotes\A_Apoyo Sistema\Lista Proveedores Dirección Importaciones.xlsx
-		String ruta="\\\\cernotes\\A_Apoyo Sistema\\Lista Proveedores Dirección Importaciones.xlsx";
-		Workbook wb = WorkbookFactory.create(new FileInputStream(ruta));
+		//String ruta="\\\\cernotes\\A_Apoyo Sistema\\Lista Proveedores Dirección Importaciones.xlsx";
+		String ruta="C:\\Users\\srodriguezg\\OneDrive - Truper, S.A. de C.V\\Documentos\\Copia de Lista Proveedores Dirección Importaciones.xlsx";
+		String contra="Truper";
+		FileInputStream fis = new FileInputStream(ruta);
+		Workbook wb = WorkbookFactory.create(fis, contra);
+		//Workbook wb = WorkbookFactory.create(new FileInputStream(ruta));
         Sheet sheet = wb.getSheetAt(0);
         proveedoresRepository.Truncarlistaproveedores();
         List<listaProveedores> listaProv = new ArrayList<>();
@@ -460,8 +465,10 @@ public class service {
 	@Transactional
 	public void actualizarCodigos() throws Exception{
 		codigosRepository.Truncarcodigos();
-		String rutas[]={"\\\\cernotes\\A_Apoyo Sistema\\Lista Codigos Direccion Importaciones.xls",
-				"\\\\cernotes\\A_Apoyo Sistema\\Listado Codigos Refacciones.xlsm"};
+		//String rutas[]={"\\\\cernotes\\A_Apoyo Sistema\\Lista Codigos Direccion Importaciones.xls",
+			//	"\\\\cernotes\\A_Apoyo Sistema\\Listado Codigos Refacciones.xlsm"};
+		String rutas[]={"C:\\Users\\srodriguezg\\Downloads\\Copia de Lista Codigos Direccion Importaciones.xls",
+				"C:\\Users\\srodriguezg\\Downloads\\Copia de Listado Codigos Refacciones.xlsm"};
 		for(int i=0; i<rutas.length; i++) {
 			String rutaActual=rutas[i];
 			int tipoArchivo=i+1;
