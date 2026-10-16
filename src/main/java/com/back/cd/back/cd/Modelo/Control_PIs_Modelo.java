@@ -13,8 +13,7 @@ import javax.persistence.Table;
 public class Control_PIs_Modelo {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nopo8;
-	private String nopo1;
+	private String nopo;
 	private String foliott;
 	private String razonsocial;
 	private String incoterm;
@@ -149,17 +148,12 @@ public class Control_PIs_Modelo {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getNopo8() {
-		return nopo8;
+	
+	public String getNopo() {
+		return nopo;
 	}
-	public void setNopo8(String nopo8) {
-		this.nopo8 = nopo8;
-	}
-	public String getNopo1() {
-		return nopo1;
-	}
-	public void setNopo1(String nopo1) {
-		this.nopo1 = nopo1;
+	public void setNopo(String nopo) {
+		this.nopo = nopo;
 	}
 	public String getFoliott() {
 		return foliott;

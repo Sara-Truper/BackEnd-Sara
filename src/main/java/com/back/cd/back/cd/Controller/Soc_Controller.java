@@ -21,14 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.back.cd.back.cd.Exception.ResourceNotFoundException;
 import com.back.cd.back.cd.Modelo.AsignacionDTO;
 import com.back.cd.back.cd.Modelo.Soc_Modelo;
+import com.back.cd.back.cd.Modelo.Socs_log_modelo;
 import com.back.cd.back.cd.Modelo.Repositorio.ContactosSoc;
 import com.back.cd.back.cd.Modelo.Repositorio.SocProjection;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Familia_1Item;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Nuevos;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Proveedor;
+import com.back.cd.back.cd.Modelo.Repositorio.Soc_PuertoEmbarque;
 import com.back.cd.back.cd.Modelo.Repositorio.Soc_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Socs_log_repositorio;
-import com.back.cd.back.cd.Modelo.Socs_log_modelo;
 
 
 @RestController
@@ -173,9 +174,14 @@ public class Soc_Controller {
 	public List<ContactosSoc> TraerContactos(){
 		return soc_Repositorio.GetContactos();
 	}
+	
 	@GetMapping("/familia/{codigo}")
 	public Optional<Soc_Familia_1Item> getFamilia(@PathVariable("codigo") Integer codigo){
 		return soc_Repositorio.findcodigos(codigo);
 	}
 	
+	@GetMapping("/puerto")
+	public List<Soc_PuertoEmbarque> TraePuerto(){
+		return soc_Repositorio.puerto_embarque();
+	}
 }

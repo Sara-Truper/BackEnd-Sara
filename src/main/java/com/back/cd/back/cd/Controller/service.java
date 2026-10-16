@@ -824,12 +824,12 @@ public class service {
         	Control_PIs_Modelo c= new Control_PIs_Modelo();
         	
         	String valorCelda = getCellValue(r.getCell(0));
-        	if (valorCelda != null && (valorCelda.startsWith("8") || valorCelda.startsWith("7"))) { 
+        	/*if (valorCelda != null && (valorCelda.startsWith("8") || valorCelda.startsWith("7"))) { 
         	    c.setNopo8(valorCelda); 
         	}else if(valorCelda != null && valorCelda.startsWith("1")){
         		c.setNopo1(valorCelda);
-        	}
-        	//c.setNopo(getCellValue(r.getCell(0)));
+        	}*/
+        	c.setNopo(getCellValue(r.getCell(0)));
         	c.setRazonsocial(getCellValue(r.getCell(18)));
         	c.setIncoterm(getCellValue(r.getCell(19)));
         	c.setPuerto(getCellValue(r.getCell(20)));

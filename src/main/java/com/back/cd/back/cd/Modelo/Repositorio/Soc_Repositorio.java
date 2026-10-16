@@ -135,5 +135,10 @@ public interface Soc_Repositorio extends JpaRepository<Soc_Modelo, Long> {
 				    + "WHERE fecha_de_emisionoc >= DATE_SUB(CURDATE(), INTERVAL 18 MONTH)",
 				    nativeQuery = true)
 				List<Soc_Modelo> Soc18meses();
+				
+			@Query(value = ""
+					+ "	select id, nooc, puerto_de_embarque from matriz_cd.socs",  
+					nativeQuery = true )
+				List<Soc_PuertoEmbarque> puerto_embarque();
 			
 }

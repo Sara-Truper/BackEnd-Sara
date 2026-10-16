@@ -32,6 +32,14 @@ public class Formato_Revisados_Modelo {
 	private String motivo;
 	private String clvterm;
 	private String nuevotermpago;
+	private String buprovalternos;
+    public String getBuprovalternos() {
+		return buprovalternos;
+	}
+
+	public void setBuprovalternos(String buprovalternos) {
+		this.buprovalternos = buprovalternos;
+	}
 	public String getNuevotermpago() {
 		return nuevotermpago;
 	}
