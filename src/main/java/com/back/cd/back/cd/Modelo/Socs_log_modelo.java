@@ -45,7 +45,16 @@ public class Socs_log_modelo{
 	@Column(name="fecha_recibo_log")
 	private String fecha_recibo_log;
 	private String z_estatus_cd;
+	private String piok;
 	
+	public String getPiok() {
+		return piok;
+	}
+
+	public void setPiok(String piok) {
+		this.piok = piok;
+	}
+
 	public String getZ_estatus_cd() {
 		return z_estatus_cd;
 	}
@@ -164,6 +173,4 @@ public class Socs_log_modelo{
 	public void setAsistentepos(String asistentepos) {
 		this.asistentepos = asistentepos;
 	}
-
-
 }

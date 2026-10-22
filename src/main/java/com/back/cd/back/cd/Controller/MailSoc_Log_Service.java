@@ -47,7 +47,11 @@ public class MailSoc_Log_Service {
                 String gerente=(nombreg).split("\\s+")[0];
                 String bu= String.valueOf(fila.getOrDefault("unidad_de_negocio", "")).toUpperCase().trim();
                 String rea = String.valueOf(fila.getOrDefault("numero_reimp", "")).trim();
-
+                String pik= String.valueOf(fila.getOrDefault("piok", "")).trim();
+                
+                boolean espok= pik.equals("PI OK") ;
+                esPiOkg=espok;
+                
                 boolean esNacional = nopo.isEmpty() || nopo.equalsIgnoreCase(nooc);
                 nacionalg= esNacional;
                 String nacionalPO = esNacional ? nooc : nopo;
@@ -57,7 +61,7 @@ public class MailSoc_Log_Service {
                 }
                 boolean esUrgente = statusProblema.contains("URGENTE");
               
-                if(statusProblema.contains("DIRECTA")) {
+                if(statusProblema.contains("DIRECTA")){
                 	tipog="Directa";
                 }else if(esUrgente) {
                 	tipog="Urgente";
@@ -69,6 +73,7 @@ public class MailSoc_Log_Service {
                 }else {
                 	noRg="";
                 }
+                
                 String rutaPDF = rutaPDF(nacionalPO, gerente, rea, esUrgente);
                 if (rutaPDF != null && !rutasArchivos.contains(rutaPDF)) {
                     rutasArchivos.add(rutaPDF);
@@ -115,7 +120,7 @@ public class MailSoc_Log_Service {
 		String plural= esPlural ? "s":"";
 		String claveCase= piOkg+nac+tip+noR;
 		//String noRTexto = "N".equalsIgnoreCase(noR) ? "" : noR;
-		//System.out.println(claveCase);
+		System.out.println(claveCase);
 		switch(claveCase) {
 		case "VerdaderoR": // NACIONAL Urgente Nuevos "SIN PI OK"
 			return "Estimado Proveedor : " + proveedor+ "\n\n" + 
