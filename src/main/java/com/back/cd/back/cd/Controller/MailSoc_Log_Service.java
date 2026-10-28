@@ -23,7 +23,6 @@ public class MailSoc_Log_Service {
 	private listaProveedoresRepository listaProveedoresRepository;
 	
 	public List<MailDTO> correos(List<Map<String, Object>> filas){
-		//agrupar filas por proveedor //collect agrupa elementos en una estructura de datos 
 		Map<String, List<Map<String, Object>>> agrupados=filas.stream().collect(Collectors.groupingBy(f-> String.valueOf(f.getOrDefault("no_de_proveedor", "")).trim()));
 		List<MailDTO> borrador=new ArrayList<>();
 		for(Map.Entry<String, List<Map<String, Object>>> entry : agrupados.entrySet()) {
@@ -48,14 +47,14 @@ public class MailSoc_Log_Service {
                 String bu= String.valueOf(fila.getOrDefault("unidad_de_negocio", "")).toUpperCase().trim();
                 String rea = String.valueOf(fila.getOrDefault("numero_reimp", "")).trim();
                 String pik= String.valueOf(fila.getOrDefault("piok", "")).trim();
-                
                 boolean espok= pik.equals("PI OK") ;
                 esPiOkg=espok;
                 
                 boolean esNacional = nopo.isEmpty() || nopo.equalsIgnoreCase(nooc);
                 nacionalg= esNacional;
                 String nacionalPO = esNacional ? nooc : nopo;
-
+                String opcionalPO = esNacional ? nopo : nooc  ;
+                
                 if (!nacionalPO.isEmpty() && !poUnicas.contains(nacionalPO)) {
                     poUnicas.add(nacionalPO);
                 }
@@ -74,7 +73,7 @@ public class MailSoc_Log_Service {
                 	noRg="";
                 }
                 
-                String rutaPDF = rutaPDF(nacionalPO, gerente, rea, esUrgente);
+                String rutaPDF = rutaPDF(nacionalPO, gerente, rea, esUrgente, opcionalPO , nombreg);
                 if (rutaPDF != null && !rutasArchivos.contains(rutaPDF)) {
                     rutasArchivos.add(rutaPDF);
                 }
@@ -83,6 +82,8 @@ public class MailSoc_Log_Service {
                 	setCopiasCC.addAll(List.of("arramirez@truper.com","dacostah@truper.com","eleonc@truper.com","gjbautistar@truper.com","ggsanchezc@truper.com","jmfernandezc@truper.com","mtrejog@truper.com","mtrejog@truper.com","medelgadilloa@truper.com","mtoledos@truper.com","fcomunes@truper.com"));
                 }else if(statusProblema.contains("DIRECTA")) {
                 	setCopiasCC.addAll(List.of("arramirez@truper.com","aprosalesm@truper.com","ayromerom@truper.com","imartinezro@truper.com","jjacintog@truper.com","mvelazquezgo@truper.com","medelgadilloa@truper.com","magomezm@truper.com"));
+                }else {
+                	setCopiasCC.addAll(List.of("arramirez@truper.com"));                	
                 } 
             }
             String cadenaPo=String.join(", ", poUnicas);
@@ -120,7 +121,6 @@ public class MailSoc_Log_Service {
 		String plural= esPlural ? "s":"";
 		String claveCase= piOkg+nac+tip+noR;
 		//String noRTexto = "N".equalsIgnoreCase(noR) ? "" : noR;
-		System.out.println(claveCase);
 		switch(claveCase) {
 		case "VerdaderoR": // NACIONAL Urgente Nuevos "SIN PI OK"
 			return "Estimado Proveedor : " + proveedor+ "\n\n" + 
@@ -208,30 +208,37 @@ public class MailSoc_Log_Service {
 		
 	}
 	
-	private String rutaPDF(String po, String gerente, String rea, boolean esUrgente) {
-        String ewa=("ERIKA".equalsIgnoreCase(gerente) || "ELIZABETH".equalsIgnoreCase(gerente)) ? "EWA\\" : "";
-        String base="\\\\srvfilesn\\POS_DIGITALES\\";
+	private String rutaPDF(String po, String gerente, String rea, boolean esUrgente , String OpcionPO , String nombreg) {
+		
+        String ewa = ("MARÍA ELIZABETH LÓPEZ".equalsIgnoreCase(nombreg) || "MARIA RIVERA A".equalsIgnoreCase(nombreg)  || "ERIKA KAREN HERNANDEZ".equalsIgnoreCase(nombreg)) ? "EWA\\" : "";
+        String base = "\\\\srvfilesn\\POS_DIGITALES\\";
+        
+        gerente = ("MARÍA ELIZABETH LÓPEZ".equalsIgnoreCase(nombreg) ? "ELIZABETH" : 
+		           "MARIA RIVERA A".equalsIgnoreCase(nombreg) ? "MARIA RIVERA" : 
+	        	   "OMAR SAHAGUN L".equalsIgnoreCase(nombreg) ? "RENE" :    
+        		   "VALERIA MEDELLÍN".equalsIgnoreCase(nombreg) ? "AARON" : 
+	        	   "ERIKA KAREN HERNANDEZ".equalsIgnoreCase(nombreg) ? "ERIKA" : gerente);
 
         if (esUrgente) {
-            base+="NUEVAS\\URGENTES\\";
+            base += "NUEVAS\\URGENTES\\REGISTRADOS\\";
         } //else if() {
         	//evalua nuevas N
         //	base +="NUEVAS\\" + ewa + gerente+"\\";
        // } 
         else if (rea!=null && rea.startsWith("R")) {
-            base+="REVISADOS_EA´S_REIMP\\"+ewa+gerente+"\\";
+            base += "REVISADOS_EA´S_REIMP\\" + ewa + gerente + "\\";
         } else { //nuevas
-            base+="NUEVAS\\"+ewa+gerente+"\\";
+            base+="NUEVAS\\" + ewa + gerente + "\\";
         }
         File folder = new File(base);
         if (folder.exists()) {
-            File[] match = folder.listFiles((dir, name) -> name.startsWith(po) && name.toLowerCase().endsWith(".pdf"));
+            File[] match = folder.listFiles((dir, name) -> (name.startsWith(po) || name.startsWith(OpcionPO)) && name.toLowerCase().endsWith(".pdf"));
             if (match!=null && match.length > 0) {
                 return match[0].getAbsolutePath();
             }
             File registrados = new File(base + "REGISTRADOS\\");
             if (registrados.exists() && registrados.isDirectory()) {
-                File[] matchesReg = registrados.listFiles((dir, name) -> name.startsWith(po) && name.endsWith(".pdf"));
+                File[] matchesReg = registrados.listFiles((dir, name) -> (name.startsWith(po) || name.startsWith(OpcionPO)) && name.endsWith(".pdf"));
                 if (matchesReg!=null && matchesReg.length > 0) {
                     return matchesReg[0].getAbsolutePath();
                 }

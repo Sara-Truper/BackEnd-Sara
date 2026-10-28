@@ -7,28 +7,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.back.cd.back.cd.Modelo.Control_PIs_Modelo;
-import com.back.cd.back.cd.Modelo.Matriz_Control_Documental_Modelo;
 import com.back.cd.back.cd.Modelo.Repositorio.Control_PIs_Repositorio;
 
 @RestController
-@RequestMapping("record/seguimiento/planta")
+@RequestMapping("/importaciones/record/seguimiento/planta")
 @CrossOrigin(origins = "*")
 public class ControlPIs_Controller{
 	@Autowired
 	private Control_PIs_Repositorio control_PIs_Repositorio;
 	
-	@PutMapping("/guardar")
+	@PostMapping("/guardar")
 	public ResponseEntity<?> guardarOActualizar(@RequestBody Control_PIs_Modelo control_PIs_Modelo) {
         try {
+        	//System.out.println(">>>PO: " + control_PIs_Modelo.getNopo());
+            //System.out.println(">>>id: " + control_PIs_Modelo.getId());
             Control_PIs_Modelo guardado = control_PIs_Repositorio.save(control_PIs_Modelo);
+            //System.out.println(">>>guardado id: " + guardado.getId());
             return ResponseEntity.ok(guardado);
         } catch (Exception e) {
+        	e.printStackTrace();
             return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
         }
     }

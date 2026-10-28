@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.back.cd.back.cd.Modelo.Arancel_Modelo;
 import com.back.cd.back.cd.Modelo.Contactos_Planta_Modelo;
 import com.back.cd.back.cd.Modelo.Control_PIs_Modelo;
+import com.back.cd.back.cd.Modelo.MatricesPlanta_Modelo;
 //import com.back.cd.back.cd.Modelo.Control_PIs_Modelo;
 import com.back.cd.back.cd.Modelo.MatrizCalculadora_Modelo;
 import com.back.cd.back.cd.Modelo.Tppm_Modelo;
@@ -25,6 +26,7 @@ import com.back.cd.back.cd.Modelo.wksh;
 import com.back.cd.back.cd.Modelo.Repositorio.Arancel_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Contactos_Planta_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Control_PIs_Repositorio;
+import com.back.cd.back.cd.Modelo.Repositorio.MatricesPlanta_Repositorio;
 // import com.back.cd.back.cd.Modelo.Repositorio.Control_PIs_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Matriz_Calculadora_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Tp_Pm_Repository;
@@ -54,6 +56,8 @@ public class Actualizar_Bases_Controller {
 	private Control_PIs_Repositorio control_PIs_Repositorio;
 	@Autowired
 	private Contactos_Planta_Repositorio Contactos_Planta_Repositorio;
+	@Autowired
+	private MatricesPlanta_Repositorio matricesPlanta_Repositorio;
 	
 	@PostMapping("/arancelpost")
 	public ResponseEntity<Map<String, Object>> arancel(){
@@ -163,10 +167,11 @@ public class Actualizar_Bases_Controller {
 	public ResponseEntity<Map<String, Object>> actualizarPlanta(){
 		Map<String, Object> respuesta = new HashMap<>();
         try {
-            mService.actualizarBufferPlanta();
-            mService.actualizarCodigosPlaneador();
-            mService.actualizarContactosPlanta();
-            respuesta.put("message", "Tablas (buffer_planta,codigos_planeador, contactos_planta) actualizadas con éxito");
+            //mService.actualizarBufferPlanta();
+            //mService.actualizarCodigosPlaneador();
+            //mService.actualizarContactosPlanta();
+            mService.actualizarMatricesPlanta();
+            respuesta.put("message", "Tablas (buffer_planta,codigos_planeador, contactos_planta, matrices_planta) actualizadas con éxito");
             return ResponseEntity.ok(respuesta);
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,6 +217,11 @@ public class Actualizar_Bases_Controller {
 	@GetMapping("/preciosall")
 	public List<precios> listarPrecios(){
 		return preciosRepository.findAll();
+	}
+	
+	@GetMapping("/matricesplantaall")
+	public List<MatricesPlanta_Modelo> matrices(){
+		return matricesPlanta_Repositorio.findAll();
 	}
 	
 	@PostMapping("/actualizar/revisados")

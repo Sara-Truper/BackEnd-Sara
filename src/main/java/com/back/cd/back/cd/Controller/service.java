@@ -26,6 +26,7 @@ import com.back.cd.back.cd.Modelo.Codigos_Planeador_Modelo;
 import com.back.cd.back.cd.Modelo.Contactos_Planta_Modelo;
 import com.back.cd.back.cd.Modelo.Control_PIs_Modelo;
 import com.back.cd.back.cd.Modelo.Fabricas_Modelo;
+import com.back.cd.back.cd.Modelo.MatricesPlanta_Modelo;
 import com.back.cd.back.cd.Modelo.MatrizCalculadora_Modelo;
 import com.back.cd.back.cd.Modelo.Tppm_Modelo;
 import com.back.cd.back.cd.Modelo.bufferPlanta_Modelo;
@@ -41,6 +42,7 @@ import com.back.cd.back.cd.Modelo.Repositorio.Codigos_Planeador_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Contactos_Planta_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Control_PIs_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Fabricas_Repositorio;
+import com.back.cd.back.cd.Modelo.Repositorio.MatricesPlanta_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Matriz_Calculadora_Repositorio;
 import com.back.cd.back.cd.Modelo.Repositorio.Tp_Pm_Repository;
 import com.back.cd.back.cd.Modelo.Repositorio.buffer_Repositorio;
@@ -80,6 +82,8 @@ public class service {
 	private Contactos_Planta_Repositorio contactos_Planta_Repositorio;
 	@Autowired
 	private Control_PIs_Repositorio control_PIs_Repositorio;
+	@Autowired
+	private MatricesPlanta_Repositorio matricesPlanta_Repositorio;
 	
 	@Transactional
 	public void actualizarArancel() throws Exception{
@@ -609,7 +613,7 @@ public class service {
 	public void actualizarMatrizCalculadora() throws Exception{
 		IOUtils.setByteArrayMaxOverride(200_000_000);
 		File archivo = null;
-		for(int d=0; d<10; d++) {
+		for(int d=0; d<15; d++) {
 			String fecha = java.time.LocalDate.now().minusDays(d).format(java.time.format.DateTimeFormatter.ofPattern("ddMMyy"));
 			String ruta="\\\\Cernotes\\seguimiento ordenes de compra imports\\Calculadora\\Listado de Items-Proveedores con matriz firmada o de Referencia al "+fecha+".xlsx";
 			File archivoO = new File(ruta);
@@ -777,7 +781,6 @@ public class service {
         }
     }
 	
-	
 	@Transactional
 	public void actualizarContactosPlanta() throws Exception{
 		//String ruta="\\\\TFSJIL01\\Ordenes de Compra\\REPORTES\\Directorio.xlsx";
@@ -855,6 +858,66 @@ public class service {
         }
     }
 	
+	@Transactional
+	public void actualizarMatricesPlanta() throws Exception{
+		IOUtils.setByteArrayMaxOverride(300_000_000);
+		String ruta=  "\\\\Tfsjil01\\Planeacion_Control_Documental\\Buffer\\PM rule.xlsx";
+		//String ruta="C:\\Users\\srodriguezg\\Downloads\\PM rule Sep 3rd.xlsx";
+		Workbook wb = WorkbookFactory.create(new FileInputStream(ruta));
+        Sheet sheet= wb.getSheet("with 60days PM rule");
+        Sheet nopmsheet=wb.getSheet("No PM rule");
+        matricesPlanta_Repositorio.TruncarMatricesPlanta();
+        List<MatricesPlanta_Modelo> matrices = new ArrayList<>();
+        for (int i=1; i <= sheet.getLastRowNum(); i++) {
+        	Row r = sheet.getRow(i);
+        	if (r.getZeroHeight()) {
+                continue;
+            }
+        	try{
+        		if (r.getCell(1)== null || getCellValue(r.getCell(1)).trim().isEmpty()) continue;
+        		MatricesPlanta_Modelo m= new MatricesPlanta_Modelo();
+        		m.setNombre(getCellValue(r.getCell(1)));
+        		m.setTrader_utilizado(getCellValue(r.getCell(2)));
+        		m.setPrices(getCellValue(r.getCell(3)));
+        		//m.setDays(getCellValue(r.getCell(4)));
+        		//m.setRemark(getCellValue(r.getCell(5)));
+        		m.setPm(getCellValue(r.getCell(6)));
+        		m.setHoja("pm rule");
+	        	matrices.add(m);
+		        }catch (Exception e) {
+		   		 e.printStackTrace();
+			        continue;
+	        	}
+        }
+        for(int i=1; i <= nopmsheet.getLastRowNum(); i++) {
+        	Row r = nopmsheet.getRow(i);
+        	if (r.getZeroHeight()) {
+                continue;
+            }
+        	try{
+        		if (r.getCell(1)== null || getCellValue(r.getCell(1)).trim().isEmpty()) continue;
+        		MatricesPlanta_Modelo m= new MatricesPlanta_Modelo();
+        		m.setNombre(getCellValue(r.getCell(0)));
+        		m.setTrader_utilizado(getCellValue(r.getCell(1)));
+        		m.setPrices(getCellValue(r.getCell(2)));
+        		//m.setDays(getCellValue(r.getCell(4)));
+        		//m.setRemark(getCellValue(r.getCell(5)));
+        		m.setPm(getCellValue(r.getCell(3)));
+        		m.setHoja("no pm rule");
+	        	matrices.add(m);
+        	}catch(Exception e) {
+        		e.printStackTrace();
+        		continue;
+        	}
+        }
+        if (matrices.size() >= 500) {
+            matricesPlanta_Repositorio.saveAll(matrices);
+            matrices.clear();
+        }
+        if (!matrices.isEmpty()) {
+        	matricesPlanta_Repositorio.saveAll(matrices);
+        }
+    }
 	
 	//FUNCIONES AUX 
 	private LocalDate getDate(Cell cell) {
