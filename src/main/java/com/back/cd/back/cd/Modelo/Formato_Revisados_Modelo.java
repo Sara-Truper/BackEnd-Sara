@@ -1,6 +1,5 @@
 package com.back.cd.back.cd.Modelo;
 
-import javax.management.loading.PrivateClassLoader;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,10 +32,28 @@ public class Formato_Revisados_Modelo {
 	private String clvterm;
 	private String nuevotermpago;
 	private String buprovalternos;
+	private String responsableprovs;
+	//private String nvotermpago;
+	private String contenido_tabla;
+	private String po;
+	private String c_pag;
+	private String motivocanceltot;
+	
+	public String getMotivocanceltot() {
+		return motivocanceltot;
+	}
+	public void setMotivocanceltot(String motivocanceltot) {
+		this.motivocanceltot = motivocanceltot;
+	}
+	public String getResponsableprovs() {
+		return responsableprovs;
+	}
+	public void setResponsableprovs(String responsableprovs) {
+		this.responsableprovs = responsableprovs;
+	}
     public String getBuprovalternos() {
 		return buprovalternos;
 	}
-
 	public void setBuprovalternos(String buprovalternos) {
 		this.buprovalternos = buprovalternos;
 	}
@@ -46,10 +63,6 @@ public class Formato_Revisados_Modelo {
 	public void setNuevotermpago(String nuevotermpago) {
 		this.nuevotermpago = nuevotermpago;
 	}
-	//private String nvotermpago;
-	private String contenido_tabla;
-	private String po;
-	private String c_pag;
 	public String getC_pag() {
 		return c_pag;
 	}

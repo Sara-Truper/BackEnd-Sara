@@ -54,7 +54,16 @@ public class Formato_Trial_Modelo {
     @Column(name="pod")
     private String pod;
     private String buprovalternos;
-    public String getBuprovalternos() {
+    private String responsableprovs;
+    public String getResponsableprovs() {
+		return responsableprovs;
+	}
+
+	public void setResponsableprovs(String responsableprovs) {
+		this.responsableprovs = responsableprovs;
+	}
+
+	public String getBuprovalternos() {
 		return buprovalternos;
 	}
 

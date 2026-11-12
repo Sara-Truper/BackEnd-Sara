@@ -39,6 +39,11 @@ public class Matriz_Cd_Controller {
 		return matriz_cd_Repositorio.BuscarU18meses();
 	}
 	
+	@GetMapping("/matrizcd6")
+	public List<Matriz_Control_Documental_Modelo> lista6Meses() {
+		return matriz_cd_Repositorio.BuscarU6meses();
+	}
+	
 //	@GetMapping("/matrizcd")
 //	public List<Matriz_Control_Documental_Modelo> listartodo(){
 //		return matriz_cd_Repositorio.findAll();

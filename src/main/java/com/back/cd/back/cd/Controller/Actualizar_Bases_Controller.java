@@ -167,9 +167,9 @@ public class Actualizar_Bases_Controller {
 	public ResponseEntity<Map<String, Object>> actualizarPlanta(){
 		Map<String, Object> respuesta = new HashMap<>();
         try {
-            //mService.actualizarBufferPlanta();
-            //mService.actualizarCodigosPlaneador();
-            //mService.actualizarContactosPlanta();
+            mService.actualizarBufferPlanta();
+            mService.actualizarCodigosPlaneador();
+            mService.actualizarContactosPlanta();
             mService.actualizarMatricesPlanta();
             respuesta.put("message", "Tablas (buffer_planta,codigos_planeador, contactos_planta, matrices_planta) actualizadas con éxito");
             return ResponseEntity.ok(respuesta);
