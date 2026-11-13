@@ -25,15 +25,19 @@ public class Formato_Trial_Controller {
 	@PostMapping("/guardar")
     public ResponseEntity<?> guardar(@RequestBody Formato_Trial_Modelo trial) {
         try {
+        	if(trial.getId()== null && trial_Repositorio.existsByFolio(trial.getFolio())) {
+        		String folioDisp=siguienteFolio().getBody();
+        		trial.setFolio(folioDisp);
+        	}
             Formato_Trial_Modelo guardado = trial_Repositorio.save(trial);
-            if (guardado.getFolio() == null || guardado.getFolio().isEmpty()) {
+            /*if (guardado.getFolio() == null || guardado.getFolio().isEmpty()) {
                 String folioAutogenerado = "TRIAL-" + String.format("%04d", guardado.getId());
                 
                 guardado.setFolio(folioAutogenerado);
                 guardado = trial_Repositorio.save(guardado);
-            }
+            }*/
             return ResponseEntity.ok(guardado); 
-        } catch (Exception e) {
+        }catch(Exception e){
         	e.printStackTrace();
             return ResponseEntity.badRequest().body("Error al guardar: " + e.getMessage());
         }
@@ -44,6 +48,17 @@ public class Formato_Trial_Controller {
         return trial_Repositorio.findByFolio(folio)
         		.map(registro -> ResponseEntity.ok().body(registro))//encuent
                 .orElse(ResponseEntity.notFound().build()); //error 404 no encontrado
+    }
+    
+    @GetMapping("/siguiente-folio")
+    public ResponseEntity<String> siguienteFolio(){
+    	String ultimoFolio=trial_Repositorio.findTopByOrderByIdDesc().map(Formato_Trial_Modelo::getFolio)//ref a metodo clase::metodo instancia ambda
+    			.filter(f-> f!=null && f.contains("-")).orElse("TRIAL-0000");
+    	String []partes=ultimoFolio.split("-");
+    	int numeroActual=Integer.parseInt(partes[1]);
+    	int siguienteNum= numeroActual+1;
+    	String siguiente=String.format("TRIAL-%04d",siguienteNum);
+    	return ResponseEntity.ok(siguiente);
     }
 	
 	@GetMapping("/listar")
