@@ -10,7 +10,7 @@ import com.back.cd.back.cd.Modelo.Formato_Trial_Modelo;
 @Repository
 public interface Formato_Trial_Repositorio extends JpaRepository<Formato_Trial_Modelo, Long>{
 	Optional<Formato_Trial_Modelo> findByFolio(String folio);
-	Optional<Formato_Trial_Modelo> findTopByOrderByIdDesc(); // metodo de springjpa, obtiene el ultomo id ordenando de forma desc
+	Optional<Formato_Trial_Modelo> findTopByFolioStartingWithOrderByIdDesc(String pref); // metodo de springjpa, obtiene el ultomo id ordenando de forma desc
 	//top primero de lista resultante 
 	
 	boolean existsByFolio(String folio);
