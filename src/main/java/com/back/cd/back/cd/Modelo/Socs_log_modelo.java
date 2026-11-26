@@ -21,13 +21,9 @@ public class Socs_log_modelo{
 	private LocalDate autorizacion_previa;
 	@Column(name = "comentarios_doc")
 	private String comentarios_doc;
-	@Column(name = "fecha_final_plan")
-	private LocalDate fecha_final_plan;
 	
 	@Column(name = "comentarios_plan")
 	private String comentarios_plan;
-	@Column(name = "fecha_final_compras")
-	private LocalDate fecha_final_compras;
 	@Column(name = "comentarios_compras")
 	private String comentarios_compras;
 	@Column(name = "numero_reimp")
@@ -46,7 +42,43 @@ public class Socs_log_modelo{
 	private String fecha_recibo_log;
 	private String z_estatus_cd;
 	private String piok;
-	
+	private LocalDate enviada;
+	private LocalDate enviodp;
+	private LocalDate enviodc;
+	private LocalDate enviocolocacion;
+
+	public LocalDate getEnviodp() {
+		return enviodp;
+	}
+
+	public void setEnviodp(LocalDate enviodp) {
+		this.enviodp = enviodp;
+	}
+
+	public LocalDate getEnviodc() {
+		return enviodc;
+	}
+
+	public void setEnviodc(LocalDate enviodc) {
+		this.enviodc = enviodc;
+	}
+
+	public LocalDate getEnviocolocacion() {
+		return enviocolocacion;
+	}
+
+	public void setEnviocolocacion(LocalDate enviocolocacion) {
+		this.enviocolocacion = enviocolocacion;
+	}
+
+	public LocalDate getEnviada() {
+		return enviada;
+	}
+
+	public void setEnviada(LocalDate enviada) {
+		this.enviada = enviada;
+	}
+
 	public String getPiok() {
 		return piok;
 	}
@@ -110,28 +142,12 @@ public class Socs_log_modelo{
 		this.comentarios_doc = comentarios_doc;
 	}
 
-	public LocalDate getFecha_final_plan() {
-		return fecha_final_plan;
-	}
-
-	public void setFecha_final_plan(LocalDate fecha_final_plan) {
-		this.fecha_final_plan = fecha_final_plan;
-	}
-
 	public String getComentarios_plan() {
 		return comentarios_plan;
 	}
 
 	public void setComentarios_plan(String comentarios_plan) {
 		this.comentarios_plan = comentarios_plan;
-	}
-
-	public LocalDate getFecha_final_compras() {
-		return fecha_final_compras;
-	}
-
-	public void setFecha_final_compras(LocalDate fecha_final_compras) {
-		this.fecha_final_compras = fecha_final_compras;
 	}
 
 	public String getComentarios_compras() {
